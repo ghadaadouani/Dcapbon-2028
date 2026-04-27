@@ -131,8 +131,9 @@ const ShakshoukaPeninsula = ({ data }: { data?: any }) => {
 
   const t = {
       label: defaultContent[language].label,
-      title: data ? (language === 'fr' ? data.title_fr : data.title_en) : defaultContent[language].title,
-      subtitle: data ? (language === 'fr' ? data.subtitle_1_fr : data.subtitle_1_en) : defaultContent[language].subtitle,
+      // Hero already uses title_en/fr — this section uses subtitle_1 as its heading
+      title: data ? (language === 'fr' ? (data.subtitle_1_fr || data.title_fr) : (data.subtitle_1_en || data.title_en)) : defaultContent[language].title,
+      subtitle: data ? (language === 'fr' ? (data.subtitle_2_fr || data.subtitle_1_fr) : (data.subtitle_2_en || data.subtitle_1_en)) : defaultContent[language].subtitle,
       p1: data ? (language === 'fr' ? data.body_1_fr : data.body_1_en) : defaultContent[language].p1,
       p2: data ? (language === 'fr' ? data.body_2_fr : data.body_2_en) : defaultContent[language].p2,
       cta1: defaultContent[language].cta1,
@@ -151,10 +152,10 @@ const ShakshoukaPeninsula = ({ data }: { data?: any }) => {
           >
             <div className="eyebrow"><span>{t.label}</span></div>
             <div className="space-y-4">
-                <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-brand-deep" dangerouslySetInnerHTML={{ __html: t.title }} />
+                <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-brand-deep break-words overflow-hidden" dangerouslySetInnerHTML={{ __html: t.title }} />
                 <h3 className="text-lg md:text-xl font-serif italic text-brand-forest mb-6" dangerouslySetInnerHTML={{ __html: t.subtitle }} />
             </div>
-            <div className="space-y-4 text-brand-deep/70 text-base leading-relaxed mb-8 max-w-[550px]">
+            <div className="space-y-4 text-brand-deep/70 text-base leading-relaxed mb-8 max-w-[550px] break-words overflow-hidden">
               <div dangerouslySetInnerHTML={{ __html: t.p1 }} />
               <div dangerouslySetInnerHTML={{ __html: t.p2 }} />
             </div>
@@ -796,33 +797,35 @@ const Gallery = () => {
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-brand-sage/5 to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-brand-sage/5 to-transparent z-10 pointer-events-none" />
 
-        <motion.div 
-          className="flex gap-4 px-4"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ 
-            duration: 60, 
-            ease: "linear", 
-            repeat: Infinity 
-          }}
-          whileHover={{ transition: { duration: 100 } }}
-        >
-          {duplicatedItems.map((item, i) => (
-            <div 
-              key={i} 
-              className="flex-shrink-0 w-[260px] md:w-[360px] aspect-[4/5] rounded-md overflow-hidden relative group"
-            >
-              <img 
-                src={duplicatedImages[i]} 
-                alt={item.caption} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-                referrerPolicy="no-referrer" 
-              />
-              <div className="absolute inset-0 bg-brand-deep/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
-                <p className="text-white font-serif italic text-base md:text-lg">{item.caption}</p>
+        <div className="overflow-x-auto no-scrollbar">
+          <motion.div 
+            className="flex gap-4 px-4 w-max md:w-full"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ 
+              duration: 60, 
+              ease: "linear", 
+              repeat: Infinity 
+            }}
+            whileHover={{ transition: { duration: 100 } }}
+          >
+            {duplicatedItems.map((item, i) => (
+              <div 
+                key={i} 
+                className="flex-shrink-0 w-[260px] md:w-[360px] aspect-[4/5] rounded-md overflow-hidden relative group"
+              >
+                <img 
+                  src={duplicatedImages[i]} 
+                  alt={item.caption} 
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  referrerPolicy="no-referrer" 
+                />
+                <div className="absolute inset-0 bg-brand-deep/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                  <p className="text-white font-serif italic text-base md:text-lg">{item.caption}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   );

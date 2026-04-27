@@ -155,9 +155,9 @@ const PagesManager = () => {
   if (loading) return <div className="h-full flex items-center justify-center py-20 text-gray-400 bg-white">Loading site pages...</div>;
 
   return (
-    <div className="flex gap-8 items-start h-[calc(100vh-160px)] bg-gray-50 p-4 rounded-3xl">
+    <div className="flex gap-8 items-start h-[calc(100vh-160px)] bg-gray-50 p-4 rounded-3xl flex-col lg:flex-row">
       {/* Sidebar List */}
-      <div className="w-80 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col h-full overflow-hidden">
+      <div className="w-full lg:w-96 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col h-full overflow-hidden">
         <div className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
           <div className="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400">
             Sitemap & Architecture
@@ -190,17 +190,19 @@ const PagesManager = () => {
                     setSelectedPage(p);
                   }
                 }}
-                className={`w-full p-4 pl-6 text-left group transition-all relative flex items-center justify-between ${
+                className={`w-full p-4 pl-6 text-left group transition-all relative flex flex-col items-start justify-between ${
                   selectedPage?.id === p.id 
                     ? 'bg-red-50 text-red-600' 
                     : 'hover:bg-gray-50 text-gray-600'
                 }`}
               >
-                <div>
-                   <div className="font-bold text-sm truncate">{p.menu_label_en}</div>
+                <div className="w-full">
+                   <div className="font-bold text-sm break-words whitespace-normal">{p.menu_label_en}</div>
                    <div className="text-[10px] opacity-40 font-mono mt-0.5">/{p.slug === 'home' ? '' : p.slug}</div>
                 </div>
-                {!p.is_visible && <EyeOff size={14} className="text-gray-300" />}
+                <div className="absolute right-4 top-4">
+                  {!p.is_visible && <EyeOff size={14} className="text-gray-300" />}
+                </div>
                 {selectedPage?.id === p.id && <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-600" />}
               </button>
             );
@@ -209,7 +211,7 @@ const PagesManager = () => {
       </div>
 
       {/* Editor Panel */}
-      <div className="flex-grow h-full overflow-y-auto pr-2 space-y-6 bg-white rounded-3xl p-8 border border-gray-100 shadow-inner">
+      <div className="flex-grow w-full h-full overflow-y-auto pr-2 space-y-6 bg-white rounded-3xl p-8 border border-gray-100 shadow-inner">
         {formData ? (
           <div className="space-y-8 pb-12">
             {/* Header */}

@@ -208,10 +208,7 @@ const Footer = () => {
         </div>
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-4 text-[10px] text-white/30 uppercase tracking-widest font-sans font-bold">
           <div>© 2026 Discover Cap Bon · Gouvernorat de Nabeul · Tunisie</div>
-          <div className="flex gap-6">
-            <a href="/admin" className="text-white/20 hover:text-white transition-colors">Admin Dashboard</a>
-            <span>{language === 'fr' ? 'Candidate Région Mondiale de Gastronomie 2028' : 'World Region of Gastronomy Candidate 2028'}</span>
-          </div>
+          <span>{language === 'fr' ? 'Candidate Région Mondiale de Gastronomie 2028' : 'World Region of Gastronomy Candidate 2028'}</span>
         </div>
       </div>
     </footer>

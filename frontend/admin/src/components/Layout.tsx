@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, FileText, Image, LogOut, Menu as MenuIcon, Inbox, Calendar, Package } from 'lucide-react';
+import { LayoutDashboard, FileText, Image, LogOut, Menu as MenuIcon, Inbox, Calendar, Package, X } from 'lucide-react';
 
 interface Props {
   children: React.ReactNode;
@@ -10,6 +10,10 @@ interface Props {
 const DashboardLayout: React.FC<Props> = ({ children, onLogout }) => {
   const location = useLocation();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem('sidebar_open');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
   useEffect(() => {
     const fetchUnread = async () => {
@@ -25,6 +29,10 @@ const DashboardLayout: React.FC<Props> = ({ children, onLogout }) => {
     const interval = setInterval(fetchUnread, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('sidebar_open', JSON.stringify(sidebarOpen));
+  }, [sidebarOpen]);
 
   const navItems = [
     { label: 'Overview', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
@@ -43,7 +51,7 @@ const DashboardLayout: React.FC<Props> = ({ children, onLogout }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <aside className="w-60 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0 z-50">
+      <aside className={`w-60 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0 z-50 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 border-b border-gray-100">
           <div className="font-serif italic text-xl text-red-600 leading-none">Cap Bon</div>
           <div className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1">Admin · 2028</div>
@@ -88,9 +96,18 @@ const DashboardLayout: React.FC<Props> = ({ children, onLogout }) => {
       </aside>
 
       {/* Main */}
-      <main className="ml-60 flex-grow min-h-screen">
+      <main className={`flex-grow min-h-screen transition-all duration-300 ${sidebarOpen ? 'ml-60' : 'ml-0'}`}>
         <header className="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-40">
-          <h2 className="font-semibold text-gray-800 text-sm">{currentLabel}</h2>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
+              title={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
+            >
+              {sidebarOpen ? <X size={20} /> : <MenuIcon size={20} />}
+            </button>
+            <h2 className="font-semibold text-gray-800 text-sm">{currentLabel}</h2>
+          </div>
           <div className="flex items-center gap-3">
             <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Admin</span>
             <div className="w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-white text-xs font-bold">A</div>
