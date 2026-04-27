@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, FileText, Image, LogOut, Menu as MenuIcon, Inbox, Calendar } from 'lucide-react';
+import { LayoutDashboard, FileText, Image, LogOut, Menu as MenuIcon, Inbox, Calendar, Package } from 'lucide-react';
 
 interface Props {
   children: React.ReactNode;
@@ -31,6 +31,7 @@ const DashboardLayout: React.FC<Props> = ({ children, onLogout }) => {
     { label: 'Pages', path: '/admin/dashboard/pages', icon: <MenuIcon size={18} /> },
     { label: 'Blog', path: '/admin/dashboard/blog', icon: <FileText size={18} /> },
     { label: 'Events', path: '/admin/dashboard/events', icon: <Calendar size={18} /> },
+    { label: 'Products', path: '/admin/dashboard/products', icon: <Package size={18} /> },
     { label: 'Media', path: '/admin/dashboard/media', icon: <Image size={18} /> },
     { label: 'Submissions', path: '/admin/dashboard/submissions', icon: <Inbox size={18} />, badge: unreadCount },
   ];

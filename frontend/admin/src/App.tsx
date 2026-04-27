@@ -8,6 +8,7 @@ import BlogManager from './pages/BlogManager';
 import MediaLibrary from './pages/MediaLibrary';
 import Submissions from './pages/Submissions';
 import EventsManager from './pages/EventsManager';
+import ProductsManager from './pages/ProductsManager';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localStorage.getItem('admin_token'));
@@ -46,6 +47,7 @@ const App = () => {
                 <Route path="media" element={<MediaLibrary />} />
                 <Route path="events" element={<EventsManager />} />
                 <Route path="submissions" element={<Submissions />} />
+                <Route path="products" element={<ProductsManager />} />
               </Routes>
             </DashboardLayout>
           ) : (

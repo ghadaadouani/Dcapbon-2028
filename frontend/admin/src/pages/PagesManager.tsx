@@ -288,7 +288,7 @@ const PagesManager = () => {
             </div>
 
             {/* EN / FR Split Editor */}
-            <div className="grid grid-cols-2 gap-8 sticky top-24">
+            <div className="grid grid-cols-2 gap-8  top-24">
               <div className="bg-blue-600 py-3 px-6 rounded-t-2xl text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-blue-50">English Version</div>
               <div className="bg-red-600 py-3 px-6 rounded-t-2xl text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-red-50">Version Française</div>
             </div>

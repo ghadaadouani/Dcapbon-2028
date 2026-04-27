@@ -184,6 +184,25 @@ export const runMigrations = async () => {
         )
     `);
 
+
+    await query(`
+        CREATE TABLE IF NOT EXISTS products (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            slug VARCHAR(255) UNIQUE NOT NULL,
+            name_en VARCHAR(255) NOT NULL,
+            name_fr VARCHAR(255) NOT NULL,
+            description_en TEXT,
+            description_fr TEXT,
+            long_description_en TEXT,
+            long_description_fr TEXT,
+            badge VARCHAR(100),
+            cover_image_id INT,
+            order_index INT DEFAULT 0,
+            is_published TINYINT(1) DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (cover_image_id) REFERENCES media(id) ON DELETE SET NULL
+        )
+    `);
     console.log('✅ Migrations completed');
 
     // Seed initial data if empty or incomplete

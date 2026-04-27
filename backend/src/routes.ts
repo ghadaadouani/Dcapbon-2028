@@ -172,8 +172,9 @@ router.get('/admin/blog', authMiddleware, async (req, res) => {
 router.post('/blog', authMiddleware, async (req, res) => {
     const { slug, title_en, title_fr, body_en, body_fr, author, is_published, cover_image_id, published_at, meta_title_en, meta_title_fr, meta_desc_en, meta_desc_fr } = req.body;
     try {
+        const toDate = (v: any) => v ? String(v).split('T')[0] : null;
         const result: any = await query(`INSERT INTO blog_posts (slug,title_en,title_fr,body_en,body_fr,author,is_published,published_at,cover_image_id,meta_title_en,meta_title_fr,meta_desc_en,meta_desc_fr) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-            [slug, title_en, title_fr, body_en, body_fr, author, is_published, published_at || (is_published ? new Date() : null), cover_image_id, meta_title_en, meta_title_fr, meta_desc_en, meta_desc_fr]);
+            [slug, title_en, title_fr, body_en, body_fr, author, is_published, toDate(published_at) || (is_published ? new Date().toISOString().split('T')[0] : null), cover_image_id, meta_title_en, meta_title_fr, meta_desc_en, meta_desc_fr]);
         res.status(201).json({ id: result.insertId });
     } catch (error: any) { res.status(500).json({ error: 'Failed to create post: ' + error.message }); }
 });
@@ -181,8 +182,9 @@ router.post('/blog', authMiddleware, async (req, res) => {
 router.put('/blog/:id', authMiddleware, async (req, res) => {
     const { slug, title_en, title_fr, body_en, body_fr, author, is_published, cover_image_id, published_at, meta_title_en, meta_title_fr, meta_desc_en, meta_desc_fr } = req.body;
     try {
+        const toDate2 = (v: any) => v ? String(v).split('T')[0] : null;
         await query(`UPDATE blog_posts SET slug=?,title_en=?,title_fr=?,body_en=?,body_fr=?,author=?,is_published=?,published_at=?,cover_image_id=?,meta_title_en=?,meta_title_fr=?,meta_desc_en=?,meta_desc_fr=? WHERE id=?`,
-            [slug, title_en, title_fr, body_en, body_fr, author, is_published, published_at, cover_image_id, meta_title_en, meta_title_fr, meta_desc_en, meta_desc_fr, req.params.id]);
+            [slug, title_en, title_fr, body_en, body_fr, author, is_published, toDate2(published_at), cover_image_id, meta_title_en, meta_title_fr, meta_desc_en, meta_desc_fr, req.params.id]);
         res.json({ success: true });
     } catch (error: any) { res.status(500).json({ error: 'Failed to update post: ' + error.message }); }
 });
@@ -287,6 +289,45 @@ router.delete('/events/:id', authMiddleware, async (req, res) => {
 router.get('/menu', async (req, res) => {
     try { res.json(await query('SELECT * FROM menu_items WHERE is_visible = 1 ORDER BY order_index ASC')); }
     catch { res.status(500).json({ error: 'Failed to fetch menu' }); }
+});
+
+
+// ─── PRODUCTS ────────────────────────────────────────────────────────────────
+router.get('/products', async (req, res) => {
+    try { res.json(await query('SELECT p.*, m.url as cover_url FROM products p LEFT JOIN media m ON p.cover_image_id = m.id WHERE p.is_published = 1 ORDER BY p.order_index ASC, p.id ASC')); }
+    catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+router.get('/admin/products', authMiddleware, async (req, res) => {
+    try { res.json(await query('SELECT p.*, m.url as cover_url FROM products p LEFT JOIN media m ON p.cover_image_id = m.id ORDER BY p.order_index ASC, p.id ASC')); }
+    catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+router.post('/products', authMiddleware, async (req, res) => {
+    const { slug, name_en, name_fr, description_en, description_fr, long_description_en, long_description_fr, badge, cover_image_id, order_index, is_published } = req.body;
+    try {
+        const result: any = await query(
+            'INSERT INTO products (slug,name_en,name_fr,description_en,description_fr,long_description_en,long_description_fr,badge,cover_image_id,order_index,is_published) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+            [slug, name_en, name_fr, description_en, description_fr, long_description_en, long_description_fr, badge || null, cover_image_id || null, order_index || 0, is_published ? 1 : 0]
+        );
+        res.json({ id: result.insertId });
+    } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+router.put('/products/:id', authMiddleware, async (req, res) => {
+    const { slug, name_en, name_fr, description_en, description_fr, long_description_en, long_description_fr, badge, cover_image_id, order_index, is_published } = req.body;
+    try {
+        await query(
+            'UPDATE products SET slug=?,name_en=?,name_fr=?,description_en=?,description_fr=?,long_description_en=?,long_description_fr=?,badge=?,cover_image_id=?,order_index=?,is_published=? WHERE id=?',
+            [slug, name_en, name_fr, description_en, description_fr, long_description_en, long_description_fr, badge || null, cover_image_id || null, order_index || 0, is_published ? 1 : 0, req.params.id]
+        );
+        res.json({ success: true });
+    } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+router.delete('/products/:id', authMiddleware, async (req, res) => {
+    try { await query('DELETE FROM products WHERE id=?', [req.params.id]); res.json({ success: true }); }
+    catch (e: any) { res.status(500).json({ error: e.message }); }
 });
 
 export default router;
