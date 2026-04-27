@@ -1,0 +1,118 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap');
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-arabic: "Amiri", serif;
+
+  --color-brand-forest: #546B41;
+  --color-brand-sage: #99AD7A;
+  --color-brand-cream: #FFF8EC;
+  --color-brand-red: #BA2D0B;
+  --color-brand-deep: #003E1F;
+
+  /* Global variables for consistent usage */
+  --color-text-body: var(--color-brand-deep);
+  --color-text-muted: #5F6B4F;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-cream text-brand-deep font-sans text-base antialiased overflow-x-hidden leading-relaxed;
+  }
+
+  h1 { @apply font-serif font-medium text-3xl md:text-5xl lg:text-6xl leading-tight mb-6; }
+  h2 { @apply font-serif font-medium text-2xl md:text-4xl leading-snug mb-4; }
+  h3 { @apply font-serif font-medium text-xl md:text-2xl leading-snug mb-3; }
+  h4 { @apply font-serif font-medium text-lg md:text-xl leading-snug mb-2; }
+  
+  p { @apply mb-4; }
+}
+
+@layer components {
+  .container-custom {
+    @apply w-full max-w-[1240px] mx-auto px-6 md:px-12 lg:px-20;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .btn {
+    @apply relative inline-flex items-center justify-center px-10 py-5 font-sans text-[10px] font-bold uppercase tracking-[0.25em] transition-all duration-700 overflow-hidden z-1 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn::before {
+    content: '';
+    @apply absolute inset-0 -z-1 transition-transform duration-500 origin-bottom scale-y-0;
+  }
+
+  .btn:hover {
+    @apply tracking-[0.35em] -translate-y-1 shadow-2xl;
+  }
+
+  .btn:hover::before {
+    @apply scale-y-100;
+  }
+
+  .btn-sm {
+    @apply px-6 py-3 text-[9px] tracking-[0.2em];
+  }
+
+  .btn-lg {
+    @apply px-12 py-6 text-[11px] tracking-[0.3em];
+  }
+
+  .btn-primary {
+    @apply bg-brand-forest text-white border border-brand-forest;
+  }
+
+  .btn-primary::before {
+    @apply bg-brand-red;
+  }
+
+  .btn-secondary {
+    @apply bg-brand-deep text-white border border-brand-deep;
+  }
+
+  .btn-secondary::before {
+    @apply bg-brand-forest;
+  }
+
+  .btn-outline {
+    @apply bg-transparent text-brand-deep border border-brand-forest/30;
+  }
+
+  .btn-outline::before {
+    @apply bg-brand-forest;
+  }
+  
+  .btn-outline:hover {
+    @apply text-white border-brand-forest;
+  }
+
+  .eyebrow {
+    @apply flex items-center gap-3 mb-4;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply block w-6 h-[1.5px] bg-brand-sage shrink-0;
+  }
+
+  .eyebrow span {
+    @apply font-sans text-[10px] font-medium uppercase tracking-[0.15em] text-brand-forest;
+  }
+}
+
+/* Hide scrollbar for chrome, safari and opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

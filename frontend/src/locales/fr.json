@@ -1,0 +1,213 @@
+{
+  "common": {
+    "readMore": "En savoir plus",
+    "back": "Retour",
+    "contact": "Contact",
+    "home": "Accueil",
+    "explore": "Découvrir",
+    "menu": "Menu",
+    "close": "Fermer"
+  },
+  "nav": {
+    "region": "La Région",
+    "about": "À propos de la région",
+    "partners": "Partners in Purpose",
+    "bid": "Le Projet de Candidature",
+    "gastronomy": "Gastronomie & Terroir",
+    "flagship": "Produits phares",
+    "specialities": "Plats & Spécialités",
+    "artisanalCrafts": "Les Arts du Cap Bon",
+    "tourism": "Tourisme",
+    "itineraries": "Itinéraires thématiques",
+    "accommodation": "Éco-séjours",
+    "restaurants": "Dîners et Tables d'Hôtes",
+    "mice": "Événements et Groupes",
+    "news": "Événements & Actualités",
+    "blog": "Blog / News",
+    "agenda": "Agenda / Festivals",
+    "media": "Médias",
+    "gallery": "Galerie photo & vidéo"
+  },
+  "footer": {
+    "usefulLinks": "Contacts utiles",
+    "rights": "Tous droits réservés",
+    "tagline": "Une Shakshouka de Saveurs"
+  },
+  "aboutPage": {
+    "title": "Le Palimpseste Vivant : La Péninsule de la Shakshouka",
+    "subtitle1": "3 000 ans d'histoire méditerranéenne partagée",
+    "subtitle2": "La « Couronne d'Émeraude » de la Tunisie",
+    "body1": "Le Cap Bon n'est pas seulement une péninsule géographique ; c'est une onomatopée. Comme le « shak-shak » rythmique de la poêle préparant notre emblématique Shakshouka, notre identité est un mélange harmonieux où diverses cultures se rencontrent. Située à seulement 140 kilomètres de la Sicile, notre terre est un palimpseste vivant. Des ruines purement puniques de Kerkouane aux préceptes de viticulture ancienne de l'agronome romain Magon, chaque civilisation — arabe, andalouse, italienne — a laissé sa marque sans effacer la précédente.",
+    "body2": "Cette « autoroute liquide » de la Méditerranée a favorisé un mariage séculaire avec nos voisins siciliens et andalous, nous permettant d'échanger des graines de tomates, des techniques de distillation et des secrets architecturaux. Entouré par trois mers et doté de 180 km de côtes azurées, le Cap Bon est la véritable « Couronne Émeraude » de la Tunisie. Avec seulement 4 % du territoire national, notre sol hautement fertile produit un pourcentage étonnant de 15 % de la richesse agricole du pays. C'est une terre définie par sa profonde générosité, sa réciprocité historique et ses traditions agricoles profondément enracinées.",
+    "img1Caption": "Une carte visuelle soulignant l'« autoroute liquide » de 140 km reliant le Cap Bon à la Sicile",
+    "img2Caption": "Une photo de paysage haute qualité des ruines puniques de Kerkouane surplombant la mer",
+    "ctaHeritage": "Découvrir notre patrimoine",
+    "ctaTerroir": "Explorer le terroir"
+  },
+  "partnersPage": {
+    "title": "Une Coalition Multisectorielle pour l'Avenir du Cap Bon",
+    "subtitle1": "Les Quatre Piliers Fondateurs de notre Candidature",
+    "subtitle2": "Les Gardiens de notre Patrimoine Culinaire",
+    "body1": "La transformation du Cap Bon est portée par une alliance multisectorielle sans précédent. Notre Comité Régional des Parties Prenantes réunit les forces vives de la péninsule : Sawa Taste of Tunisia (secteur privé et développement d'expériences), l'Office National du Tourisme Tunisien / ONTT (secteur public et stratégie touristique), l'ATPNE (secteur associatif, protection marine et environnementale) et l'Institut de Nabeul / IFMT (éducation et formation professionnelle).",
+    "body2": "Ce carrousel dynamique met en lumière les individus et les institutions qui donnent vie à notre vision 2028. Découvrez nos pionniers de l'hôtellerie régénérative, tels que La Badira, Villa Maamoura, Kurubis et Aricajade. Rencontrez nos Gardiens du Patrimoine, dont les « Ambassadrices de Hammamet », qui préservent inlassablement les traditions culinaires ancestrales comme l'Osbane Shayih et les travaux d'aiguille complexes. Plus important encore, nous nous tenons fièrement aux côtés des GDA (Groupements de Développement Agricole des femmes). Ces coopératives de femmes rurales sont le cœur battant de notre économie locale, garantissant l'autonomie économique des familles rurales et la survie de nos connaissances culinaires les plus précieuses.",
+    "hospitalitySubtitle": "Pionniers de l'Hôtellerie",
+    "gdaCaption": "Un portrait d'une « Ambassadrice de Hammamet » ou d'une artisane de la GDA au travail",
+    "ctaBoard": "Rencontrer le Conseil Exécutif",
+    "ctaGDA": "Soutenir les Coopératives de Femmes"
+  },
+  "candidacyPage": {
+    "title": "Cap Bon 2028 : Région Mondiale de la Gastronomie",
+    "subtitle1": "Dépasser la « bulle hôtelière »",
+    "subtitle2": "Nos 6 Piliers de Transformation Durable",
+    "body1": "Le Cap Bon est exceptionnellement fier d'être la première région africaine à postuler pour le titre d'IGCAT World Region of Gastronomy 2028. Cette candidature n'est pas seulement une question de victoire ; c'est un catalyseur vital pour repenser l'ensemble de notre modèle économique. Nous passons d'un tourisme de masse passif « plage bon marché » à un modèle de tourisme régénératif et nourrissant qui redistribue la richesse dans nos cœurs ruraux.",
+    "body2": "Notre feuille de route complète 2025-2030 repose sur six domaines d'intervention clés de l'IGCAT. Ceux-ci incluent « Nourrir la planète » en protégeant notre biodiversité et notre blé blanc ancestral, favoriser « l'innovation » par le biais de Food Labs dirigés par des jeunes, et combler le fossé entre les hôtels côtiers urbains et les agriculteurs ruraux grâce à des chaînes d'approvisionnement directes de la ferme à la table. En reprenant la juste place de la rive sud dans la conversation mondiale sur le régime méditerranéen, nous invitons les voyageurs à devenir des participants actifs plutôt que des consommateurs passifs. Ce projet est un engagement à long terme envers notre jeunesse, notre terre et l'avenir durable de notre péninsule.",
+    "roadmapCaption": "Un espace réservé pour une infographie moderne détaillant la feuille de route 2025-2030 et les 6 piliers",
+    "splitCaption": "Écran partagé : buffet d'hôtel standard vs atelier ferme-à-la-table vibrant",
+    "ctaManifesto": "Lire le Manifeste 2028",
+    "ctaPlan": "Voir notre Plan d'Action & Calendrier"
+  },
+  "itinerariesPage": {
+    "title": "Au-delà de la bulle hôtelière : Itinéraires actifs",
+    "subtitle1": "L'Aube du Pêcheur et la Route Aromatique",
+    "subtitle2": "Éco-archéologie et Cyclisme dans la Couronne d'Émeraude",
+    "body1": "La vision Cap Bon 2028 rejette fondamentalement le modèle de tourisme de masse passif « plage bon marché ». Nous vous invitons à devenir un participant actif de notre écosystème à travers des itinéraires thématiques hyper-détaillés. Sur notre Route Aromatique, programmée parfaitement pour mars et avril, les visiteurs entrent dans les 7 distilleries historiques de Nabeul pour assister à la fenêtre de 48 heures où les fleurs d'oranger amer sont transformées en précieux Néroli via des alambics traditionnels en cuivre.",
+    "body2": "Pour les lève-tôt, l'itinéraire L'Aube du Pêcheur vous plonge dans l'énergie criante et frénétique de la criée aux poissons de Kélibia, où la prise matinale de la Méditerranée — y compris notre thon « Or Rouge » — est triée sous vos yeux. Si vous recherchez l'éco-archéologie, nos pistes cyclables et nos sentiers de randonnée relient les anciennes ruines puniques de Kerkouane directement aux fermes rurales modernes. Vous pédalerez à travers des oliveraies séculaires, en suivant les sentiers de viticulture tracés par l'agronome romain Magon, garantissant que votre empreinte touristique finance directement la préservation de nos paysages agricoles plutôt que de stresser nos côtes.",
+    "ex1Title": "La Route Aromatique",
+    "ex1Desc": "Observez la transformation en 48 heures des fleurs d'oranger en précieux Néroli.",
+    "ex2Title": "L'Aube du Pêcheur",
+    "ex2Desc": "Vivez l'énergie criante et frénétique de la criée matinale de Kélibia.",
+    "ex3Title": "Sentiers d'Éco-Archéologie",
+    "ex3Desc": "Reliez les ruines puniques à la logique des fermes rurales modernes.",
+    "ex4Title": "Cyclisme dans la Couronne d'Émeraude",
+    "ex4Desc": "Pédalez à travers des oliveraies centenaires sur les traces de Magon.",
+    "img1Caption": "Une scène matinale vibrante et chaotique à la criée de Kélibia avec des pêcheurs triant leurs prises",
+    "img2Caption": "Touristes à vélo traversant une oliveraie verdoyante à l'heure dorée",
+    "ctaFisherman": "Réserver l'expérience L'Aube du Pêcheur",
+    "ctaCycling": "Explorer nos itinéraires vélo et randonnée"
+  },
+  "accommodationPage": {
+    "title": "Dormir à la source : Agrotourisme et éco-séjours",
+    "subtitle1": "Rompre la bulle côtière",
+    "subtitle2": "Sanctuaires durables : Kurubis, La Badira et Villa Maamoura",
+    "body1": "Le tourisme régénératif commence dès que vous choisissez où dormir. En répartissant délibérément les visiteurs à l'intérieur des terres et pendant les mois hors saison, le Cap Bon protège ses plages fragiles et donne du pouvoir aux communautés rurales. Nous sommes fiers de présenter des éco-lodges pionniers, des maisons d'hôtes et des fermes agrotouristiques — tels que La Badira, Villa Maamoura, Kurubis et Aricajade — qui agissent comme des sanctuaires durables.",
+    "body2": "Séjourner dans ces hébergements, c'est se réveiller dans une ferme familiale en activité. Vous ferez l'expérience directe de la production agricole, de la récolte de cultures traditionnelles résistantes à la sécheresse à la compréhension des techniques traditionnelles de collecte de l'eau. Ces partenaires sont profondément engagés dans une stratégie environnementale : ils éliminent les plastiques à usage unique, adoptent l'énergie solaire pour leurs installations et réduisent considérablement l'énergie de la chaîne du froid en ne servant que ce qui est de saison. Que vous soyez un jeune urbain souhaitant renouer avec le sol ou un voyageur international en quête d'authenticité pure, nos hébergements ruraux offrent un sens profond de l'« intériorité » — une retraite paisible derrière les portes cachées de la campagne du Cap Bon.",
+    "prop1Name": "La Badira",
+    "prop1Desc": "Un porte-drapeau du luxe régénératif à Hammamet.",
+    "prop2Name": "Villa Maamoura",
+    "prop2Desc": "Vie côtière charmante avec un profond respect pour le patrimoine local.",
+    "prop3Name": "Kurubis",
+    "prop3Desc": "Combler le fossé entre le cœur agricole et les mers d'azur.",
+    "prop4Name": "Aricajade",
+    "prop4Desc": "Un éco-sanctuaire dédié à la biodiversité et au calme.",
+    "sust1": "Zéro plastique à usage unique",
+    "sust2": "100% énergie solaire",
+    "sust3": "Nourriture strictement de saison",
+    "img1Caption": "Une ferme tunisienne traditionnelle magnifiquement restaurée (Maison d'Hôte) entourée de vergers d'agrumes",
+    "img2Caption": "Un gros plan d'un petit-déjeuner durable, sans plastique, avec du miel local et du pain Tabouna frais",
+    "ctaLodges": "Découvrir nos éco-lodges",
+    "ctaCommitments": "Lire nos engagements environnementaux"
+  },
+  "diningPage": {
+    "title": "Les Tables Cachées : Dîner avec les Gardiens",
+    "subtitle1": "L'Institution de Coordination de la Ferme à la Table",
+    "subtitle2": "« L'Intériorité » et les Ambassadrices de Hammamet",
+    "body1": "La gastronomie authentique du Cap Bon se trouve rarement sur une rue principale ; elle s'épanouit derrière des portes closes, dans les cours intimes de nos Tables d'Hôtes. Ici, les matriarches et les familles locales servent des plats qui n'ont jamais été commercialisés. Imaginez-vous assis avec les « Ambassadrices de Hammamet » — un groupe de femmes préservant farouchement l'héritage local — alors qu'elles présentent fièrement l'Osbane Shayih (tripes séchées au soleil) ou une bouillie Assida festive.",
+    "body2": "Pour porter cette authenticité à une plus grande échelle, le projet 2028 met en place une institution de coordination dédiée de la ferme à la table. Ce réseau révolutionnaire relie directement les grands hôtels côtiers et les restaurants de Hammamet et de Nabeul avec nos producteurs ruraux et nos coopératives de femmes (GDA). En exigeant que la consommation alimentaire touristique priorise les ingrédients locaux et de saison, nous réduisons considérablement l'empreinte carbone des produits importés, protégeons la biodiversité agricole (comme notre blé de couscous blanc ancestral) et garantissons que chaque bouchée que vous prenez augmente directement les revenus des petits artisans et des pêcheurs.",
+    "concept1Title": "Tables d'Hôtes",
+    "concept1Desc": "Expériences culinaires intimes dans les cours des familles locales.",
+    "concept2Title": "Institution Ferme-à-la-Table",
+    "concept2Desc": "Relier l'hôtellerie côtière aux producteurs ruraux et aux GDA.",
+    "img1Caption": "Un dîner intime aux chandelles dans une cour traditionnelle andalou-tunisienne",
+    "img2Caption": "Un chef dans un hôtel de Hammamet recevant une caisse de légumes frais directement d'une agricultrice de la GDA",
+    "ctaReserve": "Réserver une Table d'Hôte",
+    "ctaProducers": "Rencontrer les Producteurs"
+  },
+  "micePage": {
+    "title": "Bien-être en Entreprise et Team Building Culinaire",
+    "subtitle1": "Stations Thermales de Korbous",
+    "subtitle2": "Retraites d'Entreprises à Impact",
+    "body1": "Le Cap Bon redéfinit l'industrie du MICE en fusionnant les événements d'entreprise avec une régénération régionale profonde et un bien-être holistique. Nous invitons les organisations internationales à organiser leurs conférences et retraites de cadres dans une région qui défend le régime méditerranéen traditionnel et la cohésion communautaire. Rehaussez votre programme d'entreprise en intégrant le tourisme thermal à Korbous, où des sources chaudes riches en minéraux rencontrent la mer, offrant des retraites de bien-être inégalées imprégnées de connaissances sur les plantes médicinales.",
+    "body2": "Au-delà de la salle de conférence, nos activités de consolidation d'équipe sont enracinées dans des événements alimentaires participatifs. Vos équipes peuvent s'engager dans le modèle « El Food Lab » pour innover les recettes historiques, rejoindre une masterclass pour rouler le semoule à la main avec des artisans locaux, ou participer à la récolte automnale des olives. De plus, nos partenaires MICE sont strictement formés au renforcement des capacités institutionnelles et à la réduction des déchets — garantissant que votre service de restauration d'entreprise redistribue les surplus de nourriture et élimine les plastiques à usage unique. Un événement au Cap Bon n'est pas seulement une réunion ; c'est un investissement collaboratif dans la durabilité, la rétention des jeunes et la préservation culturelle.",
+    "activity1": "El Food Lab",
+    "activity1Desc": "Innover les recettes historiques dans notre laboratoire culinaire créatif.",
+    "activity2": "Masterclass de Semoule",
+    "activity2Desc": "Rejoignez les artisans locaux dans l'art ancestral de rouler la semoule à la main.",
+    "activity3": "Récolte des Olives",
+    "activity3Desc": "Participez à la récolte communautaire rythmée des olives en automne.",
+    "sust1": "Redistribution Alimentaire",
+    "sust2": "Zéro Plastique à Usage Unique",
+    "sust3": "Réduction des Déchets",
+    "img1Caption": "Membres d'une équipe d'entreprise riant et travaillant ensemble lors d'une masterclass de fabrication de harissa",
+    "img2Caption": "Les eaux thermales fumantes et régénératrices de Korbous s'écoulant directement dans la mer Méditerranée",
+    "ctaBrochure": "Télécharger notre brochure Corporate MICE",
+    "ctaPlan": "Planifier une retraite bien-être et team building"
+  },
+  "blogIntro": {
+    "title": "L'Histoire du Cap Bon 2028",
+    "body1": "L'histoire du Cap Bon 2028 ne se raconte pas à travers des communiqués de presse d'entreprise ; elle se raconte à travers la vie quotidienne de nos habitants. Grâce à notre campagne multimédia phare « Tables d'Échange », nous documentons les espaces authentiques où émerge notre identité : la table familiale où est servi le Couscous Abyad aux 100 œufs, la table de l'atelier du potier où l'argile est centrée, le bateau de pêche où la prise matinale est triée, et l'étal vibrant du vendeur du souk. Chaque table est un véhicule narratif explorant comment notre patrimoine est fabriqué, partagé et consommé.",
+    "body2": "Simultanément, notre pôle d'actualités suit la provocation audacieuse du « Renversement Méditerranéen ». Nous remettons activement en question les définitions centrées sur le Nord du régime méditerranéen. Par des interventions ludiques mais sérieuses — comme la publication de cartes avec le Sud en haut — nous invitons des critiques gastronomiques et des chefs influents à « découvrir » la Méditerranée méridionale. Suivez notre blog pour lire des comparaisons gustatives côte à côte de plats siciliens et tunisiens, des mises à jour de « El Food Lab », géré par des jeunes, qui ravive des recettes historiques, et notre plaidoyer continu pour redéfinir la gastronomie mondiale depuis la rive africaine.",
+    "img1Caption": "Un puissant portrait en noir et blanc d'une productrice de harissa pilant des piments à sa table en bois",
+    "img2Caption": "Un graphique créatif montrant la carte du « Renversement Méditerranéen », plaçant la Tunisie en haut de la mer Méditerranée",
+    "ctaTables": "Lire les histoires des « Tables d'Échange »",
+    "ctaReversal": "Explorer la campagne « Renversement Méditerranéen »",
+    "moreStories": "Plus d'histoires",
+    "relatedPosts": "Articles Similaires"
+  },
+  "agendaIntro": {
+    "title": "Le Rythme de la Péninsule : Un Calendrier de Récoltes",
+    "subtitle1": "Étendre la Saison à travers la Culture Alimentaire",
+    "subtitle2": "Plus de 30 Festivals et Rituels Régionaux",
+    "body1": "Le Cap Bon ne fonctionne pas sur une saison touristique standard ; nous sommes régis par le rythme ancien et ininterrompu du calendrier agricole. Pour répartir les bénéfices du tourisme de manière équitable et réduire la pression environnementale sur nos côtes, notre agenda promeut les voyages hors saison centrés sur nos plus de 30 festivals régionaux vibrants. Nous vous invitons à aligner votre visite sur les cycles naturels de la terre, transformant des vacances classiques en une immersion culturelle profonde.",
+    "body2": "Notre calendrier interactif met en lumière les moments forts de notre terroir. En mars et avril, assistez à l'alchimie de la récolte et de la distillation des fleurs d'oranger à Nabeul. Le 15 mai, rejoignez les grands rituels de récolte agricole qui ont défini notre paysage pendant des siècles. À l'arrivée de l'automne, septembre et octobre apportent la saison ardente de la fabrication de l'harissa, suivie de près par la récolte sacrée des olives en novembre et décembre. En participant à ces célébrations traditionnelles, vous aidez à maintenir leur authenticité et garantissez que notre patrimoine culinaire saisonnier reste une pratique vivante et dynamique plutôt qu'un artefact de musée.",
+    "img1Caption": "Une photographie vivante et colorée d'habitants et de visiteurs célébrant lors du festival de l'Harissa en octobre.",
+    "img2Caption": "Un gros plan de mains cueillant délicatement des fleurs d'oranger blanches sur un arbre début avril."
+  },
+  "media": {
+    "title": "Le Cap Bon sur la Scène Mondiale",
+    "subtitle1": "Soutenir les MENA Young Chef Awards",
+    "subtitle2": "Le World Food Gift Challenge",
+    "body1": "En tant que candidat pour la Région Mondiale de la Gastronomie IGCAT 2028, le Cap Bon s'avance avec confiance sur la scène internationale. Ce pôle média est dédié aux journalistes, aux partenaires internationaux et aux professionnels culinaires qui suivent nos collaborations multiplateformes. Nous ne cherchons pas seulement la reconnaissance ; nous exportons activement notre excellence. L'un de nos objectifs prioritaires est notre participation aux MENA Young Chef Awards, où nous organisons des compétitions régionales pour identifier les talents culinaires tunisiens prometteurs capables de défendre farouchement nos traditions et nos innovations modernes.",
+    "body2": "De plus, nous exploitons des initiatives de plateformes mondiales comme le World Food Gift Challenge. Regardez nos artisans et producteurs développer des cadeaux distinctifs et prêts à l'exportation avec un emballage authentique — des pots de Harissa ardente et d'eau de fleur d'oranger aux récipients artisanaux en poterie remplis de miel local. Nous fournissons également des Dossiers de Presse complets détaillant notre capacité institutionnelle, nos engagements environnementaux pour réduire les plastiques à usage unique, et nos partenariats stratégiques avec des régions comme la Sicile et Aseer (Arabie Saoudite) pour faciliter l'apprentissage par les pairs internationaux et le marketing mutuel.",
+    "ctaPress": "Télécharger le Dossier de Presse Officiel",
+    "ctaChefs": "Suivre nos Champions Jeunes Chefs",
+    "img1Caption": "Un jeune chef tunisien dressant une interprétation moderne d'un plat traditionnel lors d'une compétition internationale",
+    "img2Caption": "Produits artisanaux du Cap Bon magnifiquement emballés (Harissa, Huile d'Olive, Néroli) exposés pour le World Food Gift Challenge",
+    "initiatives": {
+      "chef": {
+        "title": "MENA Young Chef Awards",
+        "desc": "Identifier des talents culinaires pour défendre les traditions et les innovations modernes."
+      },
+      "gift": {
+        "title": "World Food Gift Challenge",
+        "desc": "Développer des cadeaux distinctifs, prêts pour l'exportation, avec un emballage authentique."
+      },
+      "kit": {
+        "title": "Dossiers de Presse",
+        "desc": "Ressources complètes mettant en avant la capacité institutionnelle et les engagements."
+      }
+    }
+  },
+  "galleryIntro": {
+    "title": "Archives Visuelles : Documenter la Shakshouka",
+    "subtitle1": "La Collection de Contenus « Résidences de Récolte »",
+    "subtitle2": "Préserver le Savoir des Anciens sur Pellicule",
+    "body1": "Pour former de véritables ambassadeurs à long terme plutôt que de dépendre de visites d'influenceurs transactionnelles, le Cap Bon a lancé le programme « Résidences de Récolte ». Nous invitons des écrivains culinaires internationaux, des photographes, des cinéastes et des chefs pour des résidences immersives d'une semaine pendant nos moments agricoles clés. En travaillant aux côtés de nos producteurs — en distillant des fleurs d'oranger ou en triant la pêche du matin — ces résidents créent un contenu époustouflant et authentique à partir de leurs rencontres. Cette galerie est le résultat visuel spectaculaire de ces véritables connexions.",
+    "body2": "Au-delà du marketing, nos archives vidéo et photo servent un objectif de préservation culturelle critique. Avant que les détenteurs de savoirs anciens ne disparaissent, nos projets audiovisuels capturent méticuleusement les techniques traditionnelles grâce à des vidéos haute définition et à l'histoire orale. Regardez des courts-métrages documentaires — commandés pour le concours international Food Film Menu — qui détaillent le roulage précis du couscous à la main, la cuisson de la poterie traditionnelle et les techniques anciennes de pêche marine. Cette galerie est un coffre-fort numérique vivant garantissant que le savoir ancestral de la péninsule de Shakshouka est transmis à la génération suivante et partagé avec le monde.",
+    "ctaWatch": "Regarder les Documentaires « Food Film Menu »",
+    "ctaApply": "Postuler pour une Résidence de Récolte",
+    "img1Caption": "Une photo des coulisses d'un cinéaste international tournant un documentaire à l'intérieur d'un atelier de poterie traditionnelle à Nabeul.",
+    "videoCaption": "Un lecteur vidéo intégré présentant un court documentaire de haute qualité de la collection « Food Film Menu »."
+  },
+  "contactIntro": {
+    "title": "Devenez un Partenaire engagé : Rejoignez le Cap Bon 2028",
+    "subtitle1": "Élargir notre Coalition Multisectorielle",
+    "subtitle2": "Un Appel aux Ambassadeurs et aux Sponsors",
+    "body1": "La candidature du Cap Bon pour la Région Mondiale de la Gastronomie repose sur une collaboration multisectorielle profonde. Nous ne prescrivons pas de programmes descendants ; au contraire, notre phase de préparation 2025-2026 s'appuie sur un processus de planification participatif. Le Comité Régional des Parties Prenantes s'élargit activement et nous vous invitons à rejoindre nos groupes de travail thématiques couvrant l'agriculture, l'artisanat, l'hôtellerie et la protection de l'environnement.",
+    "body2": "Que vous soyez un agriculteur biologique local, un maître-chef de l'ATPAC défendant la cuisine tunisienne, ou un programme de développement international (tel que l'UNESCO ou le Fonds canadien d'initiatives locales), votre expertise est vitale. Nous sélectionnons actuellement nos « Ambassadeurs » officiels — des Femmes de Hammamet dévouées aux jeunes innovants du secteur alimentaire. En vous associant à nous, vous investissez directement dans l'entrepreneuriat des jeunes, la résilience climatique et l'autonomisation économique de nos communautés rurales. Rejoignez la Shakshouka, et aidez-nous à renverser la carte de la Méditerranée.",
+    "ctaAmbassador": "Postuler pour devenir Ambassadeur",
+    "ctaSponsor": "Télécharger le Dossier de Sponsoring",
+    "img1Caption": "Un groupe de travail diversifié composé de chefs, d'agriculteurs et de jeunes collaborant autour d'une table couverte de cartes et de produits locaux",
+    "img2Caption": "Logos de partenaires de développement internationaux potentiels/actuels (programmes de l'UE, SECO suisse)",
+    "workingGroups": ["Agriculture", "Artisanat", "Hôtellerie", "Protection de l'environnement"]
+  }
+}
