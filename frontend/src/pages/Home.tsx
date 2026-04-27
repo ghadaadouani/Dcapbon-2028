@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Phone, Mail, MapPin, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { usePageContent } from '../hooks/usePageContent';
 import sunsetHero from '../assets/sunset.png';
@@ -924,111 +925,142 @@ const AreaOfMonth = () => {
 
 const ContactSection = () => {
   const { language } = useLanguage();
+  const formRef = React.useRef<HTMLDivElement>(null);
+  const [formData, setFormData] = React.useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = React.useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
-  const content = {
-    fr: {
-      title: "S'inscrire à l'Expérience",
-      desc: "La participation est limitée et intentionnellement curatée. Nous examinons chaque demande pour garantir un environnement de groupe focalisé et passionné. Les tarifs et disponibilités sont partagés en privé avec les candidats retenus.",
-      labelName: "Votre nom complet",
-      placeholderName: "Nom",
-      labelEmail: "Votre email",
-      placeholderEmail: "Email",
-      labelField: "Votre domaine ou pratique",
-      placeholderField: "Chef, artisan, passionné, etc.",
-      cta: "Envoyer la demande"
-    },
-    en: {
-      title: "Register for the Experience",
-      desc: "Participation is limited and intentionally curated. We review each request to ensure a focused and passionate group environment. Rates and availability are shared privately with successful candidates.",
-      labelName: "Your full name",
-      placeholderName: "Name",
-      labelEmail: "Your email",
-      placeholderEmail: "Email",
-      labelField: "Your field or practice",
-      placeholderField: "Chef, artisan, enthusiast, etc.",
-      cta: "Send Request"
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (res.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      setStatus('error');
     }
   };
 
-  const t = content[language];
-
   return (
-    <section className="section-padding bg-[#e2e8d8]">
-      <div className="container-custom">
-        <div className="max-w-[1000px] mx-auto text-center mb-20">
-          <motion.h2 
-            className="text-dark text-6xl md:text-8xl font-serif italic mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            {t.title}
-          </motion.h2>
-          <motion.p 
-            className="text-dark/70 text-lg md:text-xl max-w-[800px] mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            {t.desc}
-          </motion.p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-start">
-          <motion.div 
-            className="rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <img 
-              src="https://picsum.photos/seed/contact-img/800/1000" 
-              alt="Artisan" 
-              className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <form className="space-y-10">
+    <section className="section-padding bg-brand-cream container-custom px-6" ref={formRef}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-2xl font-serif italic text-brand-deep mb-8">{language === 'fr' ? 'Envoyez-nous un message' : 'Send us a message'}</h2>
+          
+          {status === 'success' ? (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-brand-sage/10 p-8 rounded-2xl border border-brand-sage/20 text-center"
+            >
+              <div className="w-16 h-16 bg-brand-sage rounded-full flex items-center justify-center mx-auto mb-4 text-white">
+                <Check size={32} />
+              </div>
+              <h3 className="text-xl font-serif italic text-brand-forest mb-2">
+                {language === 'fr' ? 'Message envoyé !' : 'Message Sent!'}
+              </h3>
+              <p className="text-brand-forest/70 text-sm">
+                {language === 'fr' 
+                  ? "Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais."
+                  : "Thank you for your message. Our team will get back to you as soon as possible."}
+              </p>
+              <button 
+                onClick={() => setStatus('idle')}
+                className="mt-6 text-brand-red text-xs font-bold uppercase tracking-widest hover:underline"
+              >
+                {language === 'fr' ? 'Envoyer un autre message' : 'Send another message'}
+              </button>
+            </motion.div>
+          ) : (
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label className="block font-serif text-3xl mb-4">{t.labelName}</label>
+                <label className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">Name</label>
                 <input 
                   type="text" 
-                  placeholder={t.placeholderName}
-                  className="w-full bg-white/40 border border-dark/5 rounded-2xl px-8 py-6 focus:outline-none focus:ring-2 focus:ring-green/20 transition-all placeholder:text-dark/30 text-lg"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full bg-white border border-brand-forest/10 p-4 focus:border-brand-red outline-none transition-colors" 
                 />
               </div>
-              
               <div>
-                <label className="block font-serif text-3xl mb-4">{t.labelEmail}</label>
+                <label className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">Email</label>
                 <input 
                   type="email" 
-                  placeholder={t.placeholderEmail}
-                  className="w-full bg-white/40 border border-dark/5 rounded-2xl px-8 py-6 focus:outline-none focus:ring-2 focus:ring-green/20 transition-all placeholder:text-dark/30 text-lg"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full bg-white border border-brand-forest/10 p-4 focus:border-brand-red outline-none transition-colors" 
                 />
               </div>
-
               <div>
-                <label className="block font-serif text-3xl mb-4">{t.labelField}</label>
-                <input 
-                  type="text" 
-                  placeholder={t.placeholderField}
-                  className="w-full bg-white/40 border border-dark/5 rounded-2xl px-8 py-6 focus:outline-none focus:ring-2 focus:ring-green/20 transition-all placeholder:text-dark/30 text-lg"
-                />
+                <label className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">Message</label>
+                <textarea 
+                  rows={6} 
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full bg-white border border-brand-forest/10 p-4 focus:border-brand-red outline-none transition-colors"
+                ></textarea>
               </div>
+              
+              {status === 'error' && (
+                <p className="text-brand-red text-xs font-bold">
+                  {language === 'fr' ? 'Une erreur est survenue. Veuillez réessayer.' : 'Something went wrong. Please try again.'}
+                </p>
+              )}
 
-              <button className="btn btn-primary w-full">
-                {t.cta}
+              <button 
+                type="submit" 
+                disabled={status === 'sending'}
+                className="btn btn-primary w-full shadow-lg disabled:opacity-50"
+              >
+                {status === 'sending' 
+                  ? (language === 'fr' ? 'Envoi en cours...' : 'Sending...') 
+                  : (language === 'fr' ? 'Envoyer' : 'Send Message')}
               </button>
             </form>
-          </motion.div>
-        </div>
+          )}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="space-y-12"
+        >
+          <div>
+            <h2 className="text-2xl font-serif italic text-brand-deep mb-8">{language === 'fr' ? 'Contacts Directs' : 'Direct Contacts'}</h2>
+            <div className="space-y-6">
+              <div className="flex items-center gap-4 text-brand-deep/70">
+                <div className="w-10 h-10 rounded-full bg-brand-forest/10 flex items-center justify-center text-brand-forest"><Mail className="w-5 h-5" /></div>
+                <span className="font-sans">contact@capbon2028.tn</span>
+              </div>
+              <div className="flex items-center gap-4 text-brand-deep/70">
+                <div className="w-10 h-10 rounded-full bg-brand-forest/10 flex items-center justify-center text-brand-forest"><Phone className="w-5 h-5" /></div>
+                <span className="font-sans">+216 72 000 000</span>
+              </div>
+              <div className="flex items-center gap-4 text-brand-deep/70">
+                <div className="w-10 h-10 rounded-full bg-brand-forest/10 flex items-center justify-center text-brand-forest"><MapPin className="w-5 h-5" /></div>
+                <span className="font-sans">{language === 'fr' ? 'Cap Bon, Tunisie' : 'Cap Bon, Tunisia'}</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
