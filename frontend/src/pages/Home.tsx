@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { usePageContent } from '../hooks/usePageContent';
+import FAQ from '../components/FAQ';
 import sunsetHero from '../assets/sunset.png';
 import image1 from '../assets/image1.png';
 import image2 from '../assets/image2.png';
@@ -359,10 +360,10 @@ const RedGoldFragrance = () => {
   );
 };
 
-const PartnersInPurpose = () => {
+const PartnersInPurpose = ({ data }: { data?: any }) => {
   const { language } = useLanguage();
 
-  const content = {
+  const defaultContent = {
     fr: {
       label: "La Collaboration",
       title: "Partenaires de Sens",
@@ -427,7 +428,20 @@ const PartnersInPurpose = () => {
     }
   };
 
-  const t = content[language];
+  const partners = data?.partners?.map(partner => ({
+    name: language === 'fr' ? partner.name_fr : partner.name_en,
+    role: language === 'fr' ? partner.role_fr : partner.role_en,
+    desc: language === 'fr' ? partner.desc_fr : partner.desc_en
+  })) || defaultContent[language].partners;
+
+  const label = data ? (language === 'fr' ? data.partners_label_fr : data.partners_label_en) : defaultContent[language].label;
+  const title = data ? (language === 'fr' ? data.partners_title_fr : data.partners_title_en) : defaultContent[language].title;
+  const subtitle = data ? (language === 'fr' ? data.partners_subtitle_fr : data.partners_subtitle_en) : defaultContent[language].subtitle;
+  const intro = data ? (language === 'fr' ? data.partners_intro_fr : data.partners_intro_en) : defaultContent[language].intro;
+  const closing = data ? (language === 'fr' ? data.partners_closing_fr : data.partners_closing_en) : defaultContent[language].closing;
+  const cta1 = data ? (language === 'fr' ? data.partners_cta1_fr : data.partners_cta1_en) : defaultContent[language].cta1;
+  const cta2 = data ? (language === 'fr' ? data.partners_cta2_fr : data.partners_cta2_en) : defaultContent[language].cta2;
+
   const images = [
     "https://picsum.photos/seed/sawa/600/400",
     "https://picsum.photos/seed/ontt/600/400",
@@ -445,16 +459,16 @@ const PartnersInPurpose = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="eyebrow justify-center"><span className="text-brand-sage">{t.label}</span></div>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-white">{t.title}</h2>
-          <h3 className="text-lg md:text-xl font-serif italic text-white/50 mb-6">{t.subtitle}</h3>
+          <div className="eyebrow justify-center"><span className="text-brand-sage">{label}</span></div>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-white">{title}</h2>
+          <h3 className="text-lg md:text-xl font-serif italic text-white/50 mb-6">{subtitle}</h3>
           <p className="text-white/40 text-base max-w-[700px] mx-auto leading-relaxed">
-            {t.intro}
+            {intro}
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {t.partners.map((partner, i) => (
+          {partners.map((partner, i) => (
             <motion.div
               key={partner.name}
               className="bg-white/5 border border-white/10 p-6 rounded-xl hover:bg-white/10 transition-all duration-500 group"
@@ -464,7 +478,7 @@ const PartnersInPurpose = () => {
               transition={{ duration: 0.6, delay: i * 0.1 }}
             >
               <div className="aspect-video overflow-hidden rounded-lg mb-6">
-                <img src={images[i]} alt={partner.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+                <img src={images[i] || images[0]} alt={partner.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
               </div>
               <h4 className="text-brand-sage font-sans text-[10px] uppercase tracking-[0.2em] mb-2">{partner.role}</h4>
               <h3 className="text-xl font-serif mb-3 text-white">{partner.name}</h3>
@@ -474,10 +488,10 @@ const PartnersInPurpose = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-white/30 italic text-sm mb-8">{t.closing}</p>
+          <p className="text-white/30 italic text-sm mb-8">{closing}</p>
           <div className="flex flex-nowrap justify-center gap-4">
-            <Link to="/la-region/partners" className="btn btn-primary !bg-white !text-brand-deep hover:!bg-brand-sage hover:!text-white">{t.cta1}</Link>
-            <Link to="/contact" className="btn btn-outline !border-white !text-white hover:!bg-white hover:!text-brand-deep">{t.cta2}</Link>
+            <Link to="/la-region/partners" className="btn btn-primary !bg-white !text-brand-deep hover:!bg-brand-sage hover:!text-white">{cta1}</Link>
+            <Link to="/contact" className="btn btn-outline !border-white !text-white hover:!bg-white hover:!text-brand-deep">{cta2}</Link>
           </div>
         </div>
       </div>
@@ -538,10 +552,10 @@ const Manifesto = () => {
   );
 };
 
-const Products = () => {
+const Products = ({ data }: { data?: any }) => {
   const { language } = useLanguage();
 
-  const content = {
+  const defaultContent = {
     fr: {
       label: "Incontournables",
       title: "Les Trésors du Terroir",
@@ -592,7 +606,10 @@ const Products = () => {
     }
   };
 
-  const t = content[language];
+  const products = data?.products || defaultContent[language].products;
+  const title = data ? (language === 'fr' ? data.products_title_fr : data.products_title_en) : defaultContent[language].title;
+  const label = data ? (language === 'fr' ? data.products_label_fr : data.products_label_en) : defaultContent[language].label;
+
   const images = [
     orangeImage,
     image3,
@@ -609,13 +626,18 @@ const Products = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="eyebrow"><span>{t.label}</span></div>
-          <h2 className="text-3xl md:text-5xl text-brand-deep">{t.title}</h2>
+          <div className="eyebrow"><span>{label}</span></div>
+          <h2 className="text-3xl md:text-5xl text-brand-deep">{title}</h2>
         </motion.div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {t.products.map((p, i) => (
+          {products.map((p, i) => {
+            const productTitle = language === 'fr' ? p.title_fr : p.title_en;
+            const productSubtitle = language === 'fr' ? p.subtitle_fr : p.subtitle_en;
+            const productDesc = language === 'fr' ? p.desc_fr : p.desc_en;
+            const productBadge = language === 'fr' ? p.badge_fr : p.badge_en;
+            return (
             <motion.div
-              key={p.title}
+              key={productTitle}
               className="group"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -623,23 +645,23 @@ const Products = () => {
               transition={{ duration: 0.8, delay: i * 0.1 }}
             >
               <div className="relative h-[300px] md:h-[340px] bg-brand-sage/5 rounded-md overflow-hidden">
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-deep font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 z-10 rounded shadow-sm">{p.badge}</div>
-                <img src={images[i]} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-deep font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 z-10 rounded shadow-sm">{productBadge}</div>
+                <img src={images[i] || images[0]} alt={productTitle} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
               </div>
               <div className="pt-6">
-                <div className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-brand-sage mb-2">{p.subtitle}</div>
-                <h3 className="text-brand-deep text-xl md:text-2xl mb-2 font-serif italic">{p.title}</h3>
-                <p className="text-brand-deep/60 text-sm leading-relaxed">{p.desc}</p>
+                <div className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-brand-sage mb-2">{productSubtitle}</div>
+                <h3 className="text-brand-deep text-xl md:text-2xl mb-2 font-serif italic">{productTitle}</h3>
+                <p className="text-brand-deep/60 text-sm leading-relaxed">{productDesc}</p>
               </div>
             </motion.div>
-          ))}
+          )})}
         </div>
       </div>
     </section>
   );
 };
 
-const Timeline = () => {
+const Timeline = ({ data }: { data?: any }) => {
   const { language } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -647,7 +669,7 @@ const Timeline = () => {
     offset: ["start end", "end start"]
   });
 
-  const content = {
+  const defaultContent = {
     fr: {
       label: "L'Épopée",
       title: "8000 Ans d'Héritage",
@@ -672,7 +694,16 @@ const Timeline = () => {
     }
   };
 
-  const t = content[language];
+  const defaultEras = defaultContent[language].eras;
+  const eras = data?.timeline?.map(era => ({
+    date: era.date,
+    title: language === 'fr' ? era.title_fr : era.title_en,
+    desc: language === 'fr' ? era.desc_fr : era.desc_en
+  })) || defaultEras;
+
+  const label = data ? (language === 'fr' ? data.timeline_label_fr : data.timeline_label_en) : defaultContent[language].label;
+  const title = data ? (language === 'fr' ? data.timeline_title_fr : data.timeline_title_en) : defaultContent[language].title;
+
   const images = [
     image6,
     image7,
@@ -694,18 +725,18 @@ const Timeline = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="eyebrow"><span className="text-brand-sage">{t.label}</span></div>
-            <h2 className="text-white text-3xl md:text-5xl lg:text-6xl">{t.title}</h2>
+            <div className="eyebrow"><span className="text-brand-sage">{label}</span></div>
+            <h2 className="text-white text-3xl md:text-5xl lg:text-6xl">{title}</h2>
           </motion.div>
         </div>
 
         <motion.div style={{ x }} className="flex gap-12 px-8 md:px-20 w-max">
-          {t.eras.map((era, i) => (
+          {eras.map((era, i) => (
             <div key={era.date} className="flex-shrink-0 w-[400px] md:w-[500px]">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-md">
                   <motion.img 
-                    src={images[i]} 
+                    src={images[i] || images[0]} 
                     alt={era.title} 
                     className="w-full h-full object-cover"
                     initial={{ scale: 1.2 }}
@@ -735,10 +766,10 @@ const Timeline = () => {
   );
 };
 
-const Gallery = () => {
+const Gallery = ({ data }: { data?: any }) => {
   const { language } = useLanguage();
 
-  const content = {
+  const defaultContent = {
     fr: {
       label: "Instants",
       title: "Galerie de Vie",
@@ -765,7 +796,13 @@ const Gallery = () => {
     }
   };
 
-  const t = content[language];
+  const galleryItems = data?.gallery?.map(item => ({
+    caption: language === 'fr' ? item.caption_fr : item.caption_en
+  })) || defaultContent[language].items;
+
+  const label = data ? (language === 'fr' ? data.gallery_label_fr : data.gallery_label_en) : defaultContent[language].label;
+  const title = data ? (language === 'fr' ? data.gallery_title_fr : data.gallery_title_en) : defaultContent[language].title;
+
   const images = [
     peppersImage,
     wineImage,
@@ -776,7 +813,7 @@ const Gallery = () => {
   ];
 
   // Duplicate items for seamless loop
-  const duplicatedItems = [...t.items, ...t.items];
+  const duplicatedItems = [...galleryItems, ...galleryItems];
   const duplicatedImages = [...images, ...images];
 
   return (
@@ -788,8 +825,8 @@ const Gallery = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="eyebrow"><span>{t.label}</span></div>
-          <h2 className="text-3xl md:text-5xl text-brand-deep">{t.title}</h2>
+          <div className="eyebrow"><span>{label}</span></div>
+          <h2 className="text-3xl md:text-5xl text-brand-deep">{title}</h2>
         </motion.div>
       </div>
 
@@ -814,7 +851,7 @@ const Gallery = () => {
                 className="flex-shrink-0 w-[260px] md:w-[360px] aspect-[4/5] rounded-md overflow-hidden relative group"
               >
                 <img 
-                  src={duplicatedImages[i]} 
+                  src={duplicatedImages[i] || duplicatedImages[0]} 
                   alt={item.caption} 
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                   referrerPolicy="no-referrer" 
@@ -1069,77 +1106,7 @@ const ContactSection = () => {
   );
 };
 
-const FAQ = () => {
-  const { language } = useLanguage();
-  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
-  const content = {
-    fr: {
-      label: "Questions",
-      title: "Tout savoir sur le projet",
-      faqs: [
-        { q: "Qu'est-ce que la Région Mondiale de Gastronomie ?", a: "C'est un titre prestigieux décerné par l'IGCAT qui récompense les régions excellant dans la préservation de leur patrimoine culinaire et le développement durable." },
-        { q: "Pourquoi le Cap Bon ?", a: "Pour sa biodiversité unique, son climat exceptionnel et la richesse de ses traditions culinaires transmises de génération en génération." },
-        { q: "Comment soutenir la candidature ?", a: "En découvrant nos producteurs locaux, en partageant vos expériences et en participant aux événements organisés tout au long de l'année." }
-      ]
-    },
-    en: {
-      label: "Questions",
-      title: "Everything about the project",
-      faqs: [
-        { q: "What is the World Region of Gastronomy?", a: "It is a prestigious title awarded by IGCAT that recognizes regions excelling in preserving their culinary heritage and sustainable development." },
-        { q: "Why Cap Bon?", a: "For its unique biodiversity, exceptional climate, and the richness of its culinary traditions passed down through generations." },
-        { q: "How to support the candidacy?", a: "By discovering our local producers, sharing your experiences, and participating in events organized throughout the year." }
-      ]
-    }
-  };
-
-  const t = content[language];
-
-  return (
-    <section className="section-padding bg-cream">
-      <div className="container-custom">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="eyebrow justify-center"><span>{t.label}</span></div>
-          <h2 className="text-dark">{t.title}</h2>
-        </motion.div>
-        <div className="max-w-[800px] mx-auto">
-          {t.faqs.map((faq, i) => (
-            <motion.div
-              key={i}
-              className="border-b border-dark/10"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-            >
-              <button
-                className="w-full py-6 flex justify-between items-center text-left text-dark font-sans font-medium text-lg focus:outline-none"
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-              >
-                {faq.q}
-                <span className={`text-2xl transition-transform duration-400 ${openIndex === i ? 'rotate-45' : ''}`}>+</span>
-              </button>
-              <motion.div
-                initial={false}
-                animate={{ height: openIndex === i ? 'auto' : 0, opacity: openIndex === i ? 1 : 0 }}
-                className="overflow-hidden"
-              >
-                <p className="pb-6 text-muted text-sm leading-relaxed">{faq.a}</p>
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const Home = () => {
   const { content: dynamicContent, loading } = usePageContent('home', null);
@@ -1151,13 +1118,13 @@ const Home = () => {
       <MediterraneanReversal />
       <Manifesto />
       <RedGoldFragrance />
-      <Timeline />
+      <Timeline data={dynamicContent} />
       <AreaOfMonth />
-      <Products />
+      <Products data={dynamicContent} />
       {/* <ImageStrip /> */}
-      <Gallery />
-      <FAQ />
-      <PartnersInPurpose />
+      <Gallery data={dynamicContent} />
+      <FAQ data={dynamicContent} />
+      <PartnersInPurpose data={dynamicContent} />
       <ContactSection />
     </>
   );

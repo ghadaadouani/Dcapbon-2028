@@ -100,18 +100,33 @@ router.delete('/contact/submissions/:id', authMiddleware, async (req, res) => {
 router.get('/pages', async (req, res) => {
     try {
         const pages = await query(`
-            SELECT p.*, pc.title_en, pc.title_fr, pc.subtitle_1_en, pc.subtitle_1_fr, pc.subtitle_2_en, pc.subtitle_2_fr, 
-                   pc.body_1_en, pc.body_1_fr, pc.body_2_en, pc.body_2_fr, 
+            SELECT p.*, pc.title_en, pc.title_fr, pc.subtitle_1_en, pc.subtitle_1_fr, pc.subtitle_2_en, pc.subtitle_2_fr, pc.subtitle_3_en, pc.subtitle_3_fr,
+                   pc.body_1_en, pc.body_1_fr, pc.body_2_en, pc.body_2_fr, pc.body_3_en, pc.body_3_fr, pc.body_4_en, pc.body_4_fr,
                    pc.image_1_id, pc.image_1_alt_en, pc.image_1_alt_fr, pc.image_1_caption_en, pc.image_1_caption_fr,
                    pc.image_2_id, pc.image_2_alt_en, pc.image_2_alt_fr, pc.image_2_caption_en, pc.image_2_caption_fr,
+                   pc.image_3_id, pc.image_3_alt_en, pc.image_3_alt_fr,
                    pc.button_1_label_en, pc.button_1_label_fr, pc.button_1_url, pc.button_1_enabled, 
                    pc.button_2_label_en, pc.button_2_label_fr, pc.button_2_url, pc.button_2_enabled,
-                   m1.url as image_1_id_url, m2.url as image_2_id_url
+                   pc.button_3_label_en, pc.button_3_label_fr, pc.button_3_url, pc.button_3_enabled,
+                   pc.faq_label_en, pc.faq_label_fr, pc.faq_title_en, pc.faq_title_fr, pc.faqs,
+                   pc.products_title_en, pc.products_title_fr, pc.products,
+                   pc.gallery_title_en, pc.gallery_title_fr, pc.gallery,
+                   pc.timeline_title_en, pc.timeline_title_fr, pc.timeline,
+                   pc.partners_title_en, pc.partners_title_fr, pc.partners,
+                   m1.url as image_1_id_url, m2.url as image_2_id_url, m3.url as image_3_id_url
             FROM pages p LEFT JOIN page_content pc ON p.id = pc.page_id 
-            LEFT JOIN media m1 ON pc.image_1_id = m1.id LEFT JOIN media m2 ON pc.image_2_id = m2.id
+            LEFT JOIN media m1 ON pc.image_1_id = m1.id LEFT JOIN media m2 ON pc.image_2_id = m2.id LEFT JOIN media m3 ON pc.image_3_id = m3.id
             ORDER BY p.order_index ASC
         `);
-        res.json(pages);
+        const result = pages.map((p: any) => ({
+            ...p,
+            faqs: p.faqs ? JSON.parse(p.faqs) : [],
+            products: p.products ? JSON.parse(p.products) : [],
+            gallery: p.gallery ? JSON.parse(p.gallery) : [],
+            timeline: p.timeline ? JSON.parse(p.timeline) : [],
+            partners: p.partners ? JSON.parse(p.partners) : []
+        }));
+        res.json(result);
     } catch (error) { res.status(500).json({ error: 'Failed to fetch pages' }); }
 });
 
@@ -126,15 +141,15 @@ router.post('/pages', authMiddleware, async (req, res) => {
 });
 
 router.put('/pages/:id', authMiddleware, async (req, res) => {
-    const { slug, is_visible, menu_label_en, menu_label_fr, title_en, title_fr, subtitle_1_en, subtitle_1_fr, subtitle_2_en, subtitle_2_fr, body_1_en, body_1_fr, body_2_en, body_2_fr, image_1_id, image_1_alt_en, image_1_alt_fr, image_1_caption_en, image_1_caption_fr, image_2_id, image_2_alt_en, image_2_alt_fr, image_2_caption_en, image_2_caption_fr, button_1_label_en, button_1_label_fr, button_1_url, button_1_enabled, button_2_label_en, button_2_label_fr, button_2_url, button_2_enabled } = req.body;
+    const { slug, is_visible, menu_label_en, menu_label_fr, title_en, title_fr, subtitle_1_en, subtitle_1_fr, subtitle_2_en, subtitle_2_fr, subtitle_3_en, subtitle_3_fr, body_1_en, body_1_fr, body_2_en, body_2_fr, body_3_en, body_3_fr, body_4_en, body_4_fr, image_1_id, image_1_alt_en, image_1_alt_fr, image_1_caption_en, image_1_caption_fr, image_2_id, image_2_alt_en, image_2_alt_fr, image_2_caption_en, image_2_caption_fr, image_3_id, image_3_alt_en, image_3_alt_fr, button_1_label_en, button_1_label_fr, button_1_url, button_1_enabled, button_2_label_en, button_2_label_fr, button_2_url, button_2_enabled, button_3_label_en, button_3_label_fr, button_3_url, button_3_enabled, faq_label_en, faq_label_fr, faq_title_en, faq_title_fr, faqs, products_title_en, products_title_fr, products, gallery_title_en, gallery_title_fr, gallery, timeline_title_en, timeline_title_fr, timeline, partners_title_en, partners_title_fr, partners } = req.body;
     try {
         await query('UPDATE pages SET slug = ?, is_visible = ?, menu_label_en = ?, menu_label_fr = ? WHERE id = ?', [slug, is_visible, menu_label_en, menu_label_fr, req.params.id]);
         const existing: any = await query('SELECT id FROM page_content WHERE page_id = ?', [req.params.id]);
-        const vals = [title_en, title_fr, subtitle_1_en, subtitle_1_fr, subtitle_2_en, subtitle_2_fr, body_1_en, body_1_fr, body_2_en, body_2_fr, image_1_id, image_1_alt_en, image_1_alt_fr, image_1_caption_en, image_1_caption_fr, image_2_id, image_2_alt_en, image_2_alt_fr, image_2_caption_en, image_2_caption_fr, button_1_label_en, button_1_label_fr, button_1_url, button_1_enabled, button_2_label_en, button_2_label_fr, button_2_url, button_2_enabled];
+        const vals = [title_en, title_fr, subtitle_1_en, subtitle_1_fr, subtitle_2_en, subtitle_2_fr, subtitle_3_en, subtitle_3_fr, body_1_en, body_1_fr, body_2_en, body_2_fr, body_3_en, body_3_fr, body_4_en, body_4_fr, image_1_id, image_1_alt_en, image_1_alt_fr, image_1_caption_en, image_1_caption_fr, image_2_id, image_2_alt_en, image_2_alt_fr, image_2_caption_en, image_2_caption_fr, image_3_id, image_3_alt_en, image_3_alt_fr, button_1_label_en, button_1_label_fr, button_1_url, button_1_enabled, button_2_label_en, button_2_label_fr, button_2_url, button_2_enabled, button_3_label_en, button_3_label_fr, button_3_url, button_3_enabled, faq_label_en, faq_label_fr, faq_title_en, faq_title_fr, faqs ? JSON.stringify(faqs) : null, products_title_en, products_title_fr, products ? JSON.stringify(products) : null, gallery_title_en, gallery_title_fr, gallery ? JSON.stringify(gallery) : null, timeline_title_en, timeline_title_fr, timeline ? JSON.stringify(timeline) : null, partners_title_en, partners_title_fr, partners ? JSON.stringify(partners) : null];
         if ((Array.isArray(existing) ? existing.length : 0) > 0) {
-            await query(`UPDATE page_content SET title_en=?,title_fr=?,subtitle_1_en=?,subtitle_1_fr=?,subtitle_2_en=?,subtitle_2_fr=?,body_1_en=?,body_1_fr=?,body_2_en=?,body_2_fr=?,image_1_id=?,image_1_alt_en=?,image_1_alt_fr=?,image_1_caption_en=?,image_1_caption_fr=?,image_2_id=?,image_2_alt_en=?,image_2_alt_fr=?,image_2_caption_en=?,image_2_caption_fr=?,button_1_label_en=?,button_1_label_fr=?,button_1_url=?,button_1_enabled=?,button_2_label_en=?,button_2_label_fr=?,button_2_url=?,button_2_enabled=? WHERE page_id=?`, [...vals, req.params.id]);
+            await query(`UPDATE page_content SET title_en=?,title_fr=?,subtitle_1_en=?,subtitle_1_fr=?,subtitle_2_en=?,subtitle_2_fr=?,subtitle_3_en=?,subtitle_3_fr=?,body_1_en=?,body_1_fr=?,body_2_en=?,body_2_fr=?,body_3_en=?,body_3_fr=?,body_4_en=?,body_4_fr=?,image_1_id=?,image_1_alt_en=?,image_1_alt_fr=?,image_1_caption_en=?,image_1_caption_fr=?,image_2_id=?,image_2_alt_en=?,image_2_alt_fr=?,image_2_caption_en=?,image_2_caption_fr=?,image_3_id=?,image_3_alt_en=?,image_3_alt_fr=?,button_1_label_en=?,button_1_label_fr=?,button_1_url=?,button_1_enabled=?,button_2_label_en=?,button_2_label_fr=?,button_2_url=?,button_2_enabled=?,button_3_label_en=?,button_3_label_fr=?,button_3_url=?,button_3_enabled=?,faq_label_en=?,faq_label_fr=?,faq_title_en=?,faq_title_fr=?,faqs=?,products_title_en=?,products_title_fr=?,products=?,gallery_title_en=?,gallery_title_fr=?,gallery=?,timeline_title_en=?,timeline_title_fr=?,timeline=?,partners_title_en=?,partners_title_fr=?,partners=? WHERE page_id=?`, [...vals, req.params.id]);
         } else {
-            await query(`INSERT INTO page_content (page_id,title_en,title_fr,subtitle_1_en,subtitle_1_fr,subtitle_2_en,subtitle_2_fr,body_1_en,body_1_fr,body_2_en,body_2_fr,image_1_id,image_1_alt_en,image_1_alt_fr,image_1_caption_en,image_1_caption_fr,image_2_id,image_2_alt_en,image_2_alt_fr,image_2_caption_en,image_2_caption_fr,button_1_label_en,button_1_label_fr,button_1_url,button_1_enabled,button_2_label_en,button_2_label_fr,button_2_url,button_2_enabled) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, [req.params.id, ...vals]);
+            await query(`INSERT INTO page_content (page_id,title_en,title_fr,subtitle_1_en,subtitle_1_fr,subtitle_2_en,subtitle_2_fr,subtitle_3_en,subtitle_3_fr,body_1_en,body_1_fr,body_2_en,body_2_fr,body_3_en,body_3_fr,body_4_en,body_4_fr,image_1_id,image_1_alt_en,image_1_alt_fr,image_1_caption_en,image_1_caption_fr,image_2_id,image_2_alt_en,image_2_alt_fr,image_2_caption_en,image_2_caption_fr,image_3_id,image_3_alt_en,image_3_alt_fr,button_1_label_en,button_1_label_fr,button_1_url,button_1_enabled,button_2_label_en,button_2_label_fr,button_2_url,button_2_enabled,button_3_label_en,button_3_label_fr,button_3_url,button_3_enabled,faq_label_en,faq_label_fr,faq_title_en,faq_title_fr,faqs,products_title_en,products_title_fr,products,gallery_title_en,gallery_title_fr,gallery,timeline_title_en,timeline_title_fr,timeline,partners_title_en,partners_title_fr,partners) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, [req.params.id, ...vals]);
         }
         res.json({ success: true });
     } catch (error: any) { res.status(500).json({ error: 'Failed to update page: ' + error.message }); }
@@ -142,12 +157,22 @@ router.put('/pages/:id', authMiddleware, async (req, res) => {
 
 router.get('/pages/:slug', async (req, res) => {
     try {
-        const pages: any = await query(`SELECT p.*, pc.*, m1.url as image_1_id_url, m2.url as image_2_id_url FROM pages p LEFT JOIN page_content pc ON p.id = pc.page_id LEFT JOIN media m1 ON pc.image_1_id = m1.id LEFT JOIN media m2 ON pc.image_2_id = m2.id WHERE p.slug = ?`, [req.params.slug]);
+        const pages: any = await query(`SELECT p.*, pc.*, m1.url as image_1_id_url, m2.url as image_2_id_url, m3.url as image_3_id_url FROM pages p LEFT JOIN page_content pc ON p.id = pc.page_id LEFT JOIN media m1 ON pc.image_1_id = m1.id LEFT JOIN media m2 ON pc.image_2_id = m2.id LEFT JOIN media m3 ON pc.image_3_id = m3.id WHERE p.slug = ?`, [req.params.slug]);
         const page = Array.isArray(pages) ? pages[0] : pages;
         if (!page) return res.status(404).json({ error: 'Page not found' });
+        // Parse JSON fields
+        ['faqs', 'products', 'gallery', 'timeline', 'partners'].forEach(field => {
+            if (page[field]) {
+                try {
+                    page[field] = JSON.parse(page[field]);
+                } catch (e) {
+                    page[field] = [];
+                }
+            }
+        });
         res.json(page);
     } catch (error) { res.status(500).json({ error: 'Failed to fetch page' }); }
-});
+})
 
 // BLOG
 router.get('/blog', async (req, res) => {

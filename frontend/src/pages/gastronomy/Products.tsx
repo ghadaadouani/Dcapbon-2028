@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
+import { usePageContent } from '../../hooks/usePageContent';
 import ProductCard from '../../components/ProductCard';
+import FAQ from '../../components/FAQ';
 
 const ProductsPage = () => {
   const { language, t } = useLanguage();
+  const { content: dynamicContent } = usePageContent('artisanal-crafts', null);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -61,6 +64,9 @@ const ProductsPage = () => {
           </p>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ data={dynamicContent} />
     </div>
   );
 };

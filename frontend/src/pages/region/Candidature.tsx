@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
+import { usePageContent } from '../../hooks/usePageContent';
+import FAQ from '../../components/FAQ';
 
 const candidacyPillars = [
   { id: 1, title: "Feeding the Planet", desc: "Protecting biodiversity and ancestral white wheat." },
@@ -14,6 +16,7 @@ const candidacyPillars = [
 
 const Candidature = () => {
   const { language, t } = useLanguage();
+  const { content: dynamicContent } = usePageContent('candidacy', null);
 
   return (
     <div className="bg-brand-cream min-h-screen pb-24">
@@ -149,6 +152,9 @@ const Candidature = () => {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ data={dynamicContent} />
     </div>
   );
 };

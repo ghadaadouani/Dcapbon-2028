@@ -2,9 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
+import { usePageContent } from '../../hooks/usePageContent';
+import FAQ from '../../components/FAQ';
 
 const Itineraries = () => {
   const { language, t } = useLanguage();
+  const { content: dynamicContent } = usePageContent('itineraries', null);
 
   const experiences = [
     { title: t('itinerariesPage.ex1Title'), desc: t('itinerariesPage.ex1Desc'), icon: "01" },
@@ -142,6 +145,9 @@ const Itineraries = () => {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ data={dynamicContent} />
     </div>
   );
 };

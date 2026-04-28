@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
+import { usePageContent } from '../../hooks/usePageContent';
+import FAQ from '../../components/FAQ';
 
 const foundingPartners = [
   { name: "Sawa Taste of Tunisia", desc: "Private Sector & Experience Development" },
@@ -19,6 +21,7 @@ const hospitalityPioneers = [
 
 const Partners = () => {
   const { language, t } = useLanguage();
+  const { content: dynamicContent } = usePageContent('partners', null);
 
   return (
     <div className="bg-brand-cream min-h-screen pb-24">
@@ -160,6 +163,9 @@ const Partners = () => {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ data={dynamicContent} />
     </div>
   );
 };

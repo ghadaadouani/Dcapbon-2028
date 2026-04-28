@@ -59,10 +59,16 @@ export const runMigrations = async () => {
             subtitle_1_fr TEXT,
             subtitle_2_en TEXT,
             subtitle_2_fr TEXT,
+            subtitle_3_en TEXT,
+            subtitle_3_fr TEXT,
             body_1_en ${longtext},
             body_1_fr ${longtext},
             body_2_en ${longtext},
             body_2_fr ${longtext},
+            body_3_en ${longtext},
+            body_3_fr ${longtext},
+            body_4_en ${longtext},
+            body_4_fr ${longtext},
             image_1_id INT NULL,
             image_1_alt_en TEXT,
             image_1_alt_fr TEXT,
@@ -73,6 +79,9 @@ export const runMigrations = async () => {
             image_2_alt_fr TEXT,
             image_2_caption_en TEXT,
             image_2_caption_fr TEXT,
+            image_3_id INT NULL,
+            image_3_alt_en TEXT,
+            image_3_alt_fr TEXT,
             button_1_label_en TEXT,
             button_1_label_fr TEXT,
             button_1_url TEXT,
@@ -81,11 +90,68 @@ export const runMigrations = async () => {
             button_2_label_fr TEXT,
             button_2_url TEXT,
             button_2_enabled BOOLEAN DEFAULT FALSE,
+            button_3_label_en TEXT,
+            button_3_label_fr TEXT,
+            button_3_url TEXT,
+            button_3_enabled BOOLEAN DEFAULT FALSE,
+            faq_label_en TEXT,
+            faq_label_fr TEXT,
+            faq_title_en TEXT,
+            faq_title_fr TEXT,
+            faqs ${longtext},
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at ${timestamp},
             FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE
         )
     `);
+
+    // Add new columns to existing page_content table (for migrations)
+    try {
+        const columns = isSql 
+            ? (await query("PRAGMA table_info(page_content)") as any[]).map((col: any) => col.name)
+            : [];
+        
+        if (!columns.includes('subtitle_3_en')) {
+            await query(`ALTER TABLE page_content ADD COLUMN subtitle_3_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN subtitle_3_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN body_3_en ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN body_3_fr ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN body_4_en ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN body_4_fr ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN image_3_id INT NULL`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN image_3_alt_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN image_3_alt_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN button_3_label_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN button_3_label_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN button_3_url TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN button_3_enabled BOOLEAN DEFAULT FALSE`).catch(() => {});
+        }
+
+        if (!columns.includes('faq_label_en')) {
+            await query(`ALTER TABLE page_content ADD COLUMN faq_label_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN faq_label_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN faq_title_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN faq_title_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN faqs ${longtext}`).catch(() => {});
+        }
+
+        if (!columns.includes('products_title_en')) {
+            await query(`ALTER TABLE page_content ADD COLUMN products_title_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN products_title_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN products ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN gallery_title_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN gallery_title_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN gallery ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN timeline_title_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN timeline_title_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN timeline ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN partners_title_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN partners_title_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN partners ${longtext}`).catch(() => {});
+        }
+    } catch (e) {
+        // Migrations are optional, fail silently
+    }
 
     // Media
     await query(`

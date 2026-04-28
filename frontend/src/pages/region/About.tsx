@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { usePageContent } from '../../hooks/usePageContent';
+import FAQ from '../../components/FAQ';
 
 const About = () => {
   const { language, t } = useLanguage();
@@ -116,6 +117,9 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ data={dynamicContent} />
     </div>
   );
 };
