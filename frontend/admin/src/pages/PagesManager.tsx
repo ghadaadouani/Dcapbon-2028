@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import { Save, AlertCircle, Image as ImageIcon, ExternalLink, Eye, EyeOff, Check, X, Plus, FileText } from 'lucide-react';
+import { Save, AlertCircle, Image as ImageIcon, ExternalLink, Eye, EyeOff, Check, X, Plus, FileText, Trash2 } from 'lucide-react';
 import MediaPicker from '../components/MediaPicker';
 
 const PagesManager = () => {
@@ -18,6 +18,9 @@ const PagesManager = () => {
   // Create Page State
   const [isCreating, setIsCreating] = useState(false);
   const [newBrandPage, setNewBrandPage] = useState({ slug: '', en: '', fr: '' });
+
+  // Delete Page State
+  const [pageToDelete, setPageToDelete] = useState<any>(null);
 
   useEffect(() => {
     fetchPages();
@@ -91,6 +94,31 @@ const PagesManager = () => {
       }
     } catch (err) {
       console.error('Failed to create page');
+    }
+  };
+
+  const handleDeletePage = async () => {
+    if (!pageToDelete) return;
+    try {
+      const res = await fetch(`/api/pages/${pageToDelete.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+        }
+      });
+      if (res.ok) {
+        setPageToDelete(null);
+        if (selectedPage?.id === pageToDelete.id) {
+          setSelectedPage(null);
+          setFormData(null);
+        }
+        await fetchPages();
+        setShowToast({ message: 'Page deleted successfully', type: 'success' });
+      } else {
+        setShowToast({ message: 'Failed to delete page', type: 'error' });
+      }
+    } catch (err) {
+      setShowToast({ message: 'Failed to delete page', type: 'error' });
     }
   };
 
@@ -207,8 +235,21 @@ const PagesManager = () => {
                    <div className="font-bold text-sm break-words whitespace-normal">{p.menu_label_en}</div>
                    <div className="text-[10px] opacity-40 font-mono mt-0.5">/{p.slug === 'home' ? '' : p.slug}</div>
                 </div>
-                <div className="absolute right-4 top-4">
+                <div className="absolute right-4 top-4 flex items-center gap-2">
                   {!p.is_visible && <EyeOff size={14} className="text-gray-300" />}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isDirty && selectedPage?.id === p.id) {
+                        if (!window.confirm('You have unsaved changes. Discard them?')) return;
+                      }
+                      setPageToDelete(p);
+                    }}
+                    className="p-1 hover:bg-red-100 rounded transition-colors opacity-0 group-hover:opacity-100"
+                    title="Delete page"
+                  >
+                    <Trash2 size={14} className="text-red-500" />
+                  </button>
                 </div>
                 {selectedPage?.id === p.id && <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-600" />}
               </button>
@@ -1186,6 +1227,110 @@ const PagesManager = () => {
         selectedId={activeImageField ? formData?.[activeImageField] : null}
         onSelect={handleMediaSelect}
       />
+
+      {/* Create Page Modal */}
+      {isCreating && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-serif italic text-gray-900">Create New Page</h2>
+              <button
+                onClick={() => setIsCreating(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X size={20} className="text-gray-400" />
+              </button>
+            </div>
+            <form onSubmit={handleCreatePage} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">URL Slug</label>
+                <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3">
+                  <span className="text-gray-400 text-sm">/</span>
+                  <input
+                    type="text"
+                    className="flex-grow py-3 bg-transparent text-sm font-mono outline-none"
+                    value={newBrandPage.slug}
+                    onChange={(e) => setNewBrandPage({ ...newBrandPage, slug: e.target.value })}
+                    placeholder="page-name"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Menu Label (EN)</label>
+                <input
+                  type="text"
+                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:border-red-500"
+                  value={newBrandPage.en}
+                  onChange={(e) => setNewBrandPage({ ...newBrandPage, en: e.target.value })}
+                  placeholder="Page Name"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Menu Label (FR)</label>
+                <input
+                  type="text"
+                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:border-red-500"
+                  value={newBrandPage.fr}
+                  onChange={(e) => setNewBrandPage({ ...newBrandPage, fr: e.target.value })}
+                  placeholder="Nom de la Page"
+                  required
+                />
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsCreating(false)}
+                  className="flex-1 py-3 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 transition-colors"
+                >
+                  Create Page
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {pageToDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                <AlertCircle size={24} className="text-red-600" />
+              </div>
+              <div>
+                <h2 className="text-xl font-serif italic text-gray-900">Delete Page</h2>
+                <p className="text-sm text-gray-500">This action cannot be undone</p>
+              </div>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete <strong>"{pageToDelete.menu_label_en}"</strong>? This will permanently remove the page and all its content.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setPageToDelete(null)}
+                className="flex-1 py-3 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeletePage}
+                className="flex-1 py-3 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 transition-colors"
+              >
+                Delete Page
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toast Notification */}
       {showToast && (

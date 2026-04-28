@@ -164,9 +164,20 @@ export const runMigrations = async () => {
             url VARCHAR(500),
             alt_text_en VARCHAR(255),
             alt_text_fr VARCHAR(255),
+            category VARCHAR(50),
             uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     `);
+
+    // Add category column to existing media table (migration)
+    try {
+        await query(`ALTER TABLE media ADD COLUMN category VARCHAR(50)`).catch(() => {});
+    } catch { /* Column may already exist */ }
+
+    // Add show_in_gallery column to media table (migration)
+    try {
+        await query(`ALTER TABLE media ADD COLUMN show_in_gallery INTEGER DEFAULT 0`).catch(() => {});
+    } catch { /* Column may already exist */ }
 
     // Blog Posts (Expanded with SEO)
     await query(`

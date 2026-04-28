@@ -5,8 +5,8 @@ interface Props {
 }
 
 const LoginPage: React.FC<Props> = ({ onLogin }) => {
-  const [email, setEmail] = useState('admin@capbon2028.tn');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [seconds, setSeconds] = useState(0);
@@ -87,8 +87,8 @@ const LoginPage: React.FC<Props> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-md p-10 rounded-2xl shadow-xl">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 sm:p-6">
+      <div className="bg-white w-full max-w-md p-6 sm:p-10 rounded-2xl shadow-xl">
         <div className="text-center mb-10">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Login</h1>
           <p className="text-gray-500 text-sm">Cap Bon 2028 Candidacy Platform</p>

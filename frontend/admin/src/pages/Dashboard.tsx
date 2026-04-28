@@ -79,7 +79,7 @@ const Dashboard = () => {
           <div className="h-9 bg-gray-100 rounded-lg w-72 animate-pulse mb-2" />
           <div className="h-4 bg-gray-100 rounded w-48 animate-pulse" />
         </div>
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(8)].map((_, i) => (
             <div key={i} className="bg-gray-100 rounded-2xl h-36 animate-pulse" />
           ))}
@@ -102,12 +102,12 @@ const Dashboard = () => {
   return (
     <div className="space-y-10">
       {/* Header */}
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-serif italic text-gray-900">Overview</h1>
+          <h1 className="text-2xl sm:text-3xl font-serif italic text-gray-900">Overview</h1>
           <p className="text-gray-400 mt-1 text-sm">Cap Bon 2028 — Content Management</p>
         </div>
-        <div className="text-right">
+        <div className="text-left sm:text-right">
           <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
         </div>
       </div>
@@ -129,7 +129,7 @@ const Dashboard = () => {
       {/* Stats Grid */}
       <div>
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Content Overview</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard icon={<FileText size={20} className="text-blue-600" />} label="Total Pages" value={s.pages} color="bg-blue-50" link="/admin/dashboard/pages" />
           <StatCard icon={<TrendingUp size={20} className="text-green-600" />} label="Blog Posts" value={s.blogPosts} sub={`${s.publishedPosts} published · ${s.draftPosts} drafts`} color="bg-green-50" link="/admin/dashboard/blog" />
           <StatCard icon={<Image size={20} className="text-purple-600" />} label="Media Files" value={s.mediaFiles} color="bg-purple-50" link="/admin/dashboard/media" />
@@ -139,7 +139,7 @@ const Dashboard = () => {
 
       <div>
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Engagement</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard icon={<Inbox size={20} className="text-red-600" />} label="Unread Messages" value={s.unreadSubmissions} color="bg-red-50" link="/admin/dashboard/submissions" />
           <StatCard icon={<Users size={20} className="text-teal-600" />} label="Total Submissions" value={s.submissions} color="bg-teal-50" link="/admin/dashboard/submissions" />
           <StatCard icon={<Eye size={20} className="text-indigo-600" />} label="Published Posts" value={s.publishedPosts} color="bg-indigo-50" link="/admin/dashboard/blog" />
@@ -148,7 +148,7 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
         {/* Recent Submissions */}
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
@@ -210,7 +210,7 @@ const Dashboard = () => {
       {/* Quick Actions */}
       <div>
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { label: 'New Blog Post', to: '/admin/dashboard/blog', icon: <FileText size={16} /> },
             { label: 'Upload Media', to: '/admin/dashboard/media', icon: <Image size={16} /> },

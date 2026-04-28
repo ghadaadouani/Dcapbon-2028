@@ -10,8 +10,12 @@ interface MediaFile {
   url: string;
   alt_text_en?: string;
   alt_text_fr?: string;
+  category?: string;
+  show_in_gallery?: number;
   uploaded_at: string;
 }
+
+const GALLERY_CATEGORIES = ['Food', 'Landscape', 'Artisanat', 'Festivals', 'People'];
 
 const formatBytes = (bytes: number) => {
   if (bytes === 0) return '0 B';
@@ -27,6 +31,7 @@ const MediaLibrary = () => {
   const [uploading, setUploading] = useState(false);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<'all' | 'image' | 'document'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [selected, setSelected] = useState<MediaFile | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -56,8 +61,15 @@ const MediaLibrary = () => {
 
   useEffect(() => { fetchFiles(); }, [fetchFiles]);
 
+  const [editingCategory, setEditingCategory] = useState<string>('');
+  const [editingShowInGallery, setEditingShowInGallery] = useState<boolean>(false);
+
   useEffect(() => {
-    if (selected) setEditingAlt({ en: selected.alt_text_en || '', fr: selected.alt_text_fr || '' });
+    if (selected) {
+      setEditingAlt({ en: selected.alt_text_en || '', fr: selected.alt_text_fr || '' });
+      setEditingCategory(selected.category || '');
+      setEditingShowInGallery(!!selected.show_in_gallery);
+    }
   }, [selected]);
 
   const handleUpload = async (fileList: FileList | null) => {
@@ -103,17 +115,17 @@ const MediaLibrary = () => {
     } catch { showToast('Failed to delete file', 'error'); }
   };
 
-  const handleSaveAlt = async () => {
+  const handleSaveDetails = async () => {
     if (!selected) return;
     try {
       await fetch(`/api/media/${selected.id}`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ alt_text_en: editingAlt.en, alt_text_fr: editingAlt.fr })
+        body: JSON.stringify({ alt_text_en: editingAlt.en, alt_text_fr: editingAlt.fr, category: editingCategory, show_in_gallery: editingShowInGallery })
       });
-      showToast('Alt text saved');
-      setSelected({ ...selected, alt_text_en: editingAlt.en, alt_text_fr: editingAlt.fr });
-      setFiles(prev => prev.map(f => f.id === selected.id ? { ...f, alt_text_en: editingAlt.en, alt_text_fr: editingAlt.fr } : f));
+      showToast('Details saved');
+      setSelected({ ...selected, alt_text_en: editingAlt.en, alt_text_fr: editingAlt.fr, category: editingCategory, show_in_gallery: editingShowInGallery ? 1 : 0 });
+      setFiles(prev => prev.map(f => f.id === selected.id ? { ...f, alt_text_en: editingAlt.en, alt_text_fr: editingAlt.fr, category: editingCategory, show_in_gallery: editingShowInGallery ? 1 : 0 } : f));
     } catch { showToast('Failed to save', 'error'); }
   };
 
@@ -122,9 +134,11 @@ const MediaLibrary = () => {
     showToast('URL copied to clipboard');
   };
 
-  const filtered = files.filter(f =>
-    f.original_name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = files.filter(f => {
+    const matchesSearch = f.original_name.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = categoryFilter === 'all' || f.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
 
   const isImage = (mime: string) => mime?.startsWith('image/');
 
@@ -187,7 +201,7 @@ const MediaLibrary = () => {
       </div>
 
       {/* Filters & Search */}
-      <div className="flex gap-4 items-center">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
         <div className="relative flex-grow">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -198,34 +212,46 @@ const MediaLibrary = () => {
             className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-400 transition-colors"
           />
         </div>
-        <div className="flex bg-white border border-gray-200 rounded-xl p-1">
-          {(['all', 'image', 'document'] as const).map(t => (
-            <button key={t} onClick={() => setTypeFilter(t)} className={`px-4 py-1.5 text-sm font-bold rounded-lg capitalize transition-all ${typeFilter === t ? 'bg-red-600 text-white shadow' : 'text-gray-400 hover:text-gray-600'}`}>{t}</button>
-          ))}
-        </div>
-        <div className="flex bg-white border border-gray-200 rounded-xl p-1">
-          <button onClick={() => setView('grid')} className={`p-2 rounded-lg transition-all ${view === 'grid' ? 'bg-red-600 text-white' : 'text-gray-400'}`}><Grid size={14} /></button>
-          <button onClick={() => setView('list')} className={`p-2 rounded-lg transition-all ${view === 'list' ? 'bg-red-600 text-white' : 'text-gray-400'}`}><List size={14} /></button>
+        <div className="flex gap-2 sm:gap-4 items-center">
+          <div className="flex bg-white border border-gray-200 rounded-xl p-1 flex-1 sm:flex-none">
+            {(['all', 'image', 'document'] as const).map(t => (
+              <button key={t} onClick={() => setTypeFilter(t)} className={`px-3 sm:px-4 py-1.5 text-sm font-bold rounded-lg capitalize transition-all ${typeFilter === t ? 'bg-red-600 text-white shadow' : 'text-gray-400 hover:text-gray-600'}`}>{t}</button>
+            ))}
+          </div>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-400 bg-white flex-1 sm:flex-none"
+          >
+            <option value="all">All Categories</option>
+            {GALLERY_CATEGORIES.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+          <div className="flex bg-white border border-gray-200 rounded-xl p-1 flex-none">
+            <button onClick={() => setView('grid')} className={`p-2 rounded-lg transition-all ${view === 'grid' ? 'bg-red-600 text-white' : 'text-gray-400'}`}><Grid size={14} /></button>
+            <button onClick={() => setView('list')} className={`p-2 rounded-lg transition-all ${view === 'list' ? 'bg-red-600 text-white' : 'text-gray-400'}`}><List size={14} /></button>
+          </div>
         </div>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
         {/* File Grid/List */}
-        <div className="flex-grow">
+        <div className="flex-grow min-w-0">
           {loading ? (
-            <div className={view === 'grid' ? 'grid grid-cols-4 gap-4' : 'space-y-2'}>
+            <div className={view === 'grid' ? 'grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4' : 'space-y-2'}>
               {[...Array(8)].map((_, i) => (
                 <div key={i} className={`bg-gray-100 rounded-xl animate-pulse ${view === 'grid' ? 'aspect-square' : 'h-16'}`} />
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="bg-white border border-gray-100 rounded-2xl p-16 text-center">
+            <div className="bg-white border border-gray-100 rounded-2xl p-8 sm:p-16 text-center">
               <ImageIcon size={40} className="mx-auto text-gray-200 mb-4" />
               <p className="text-gray-500 font-medium">{search ? 'No files match your search' : 'No media files yet'}</p>
               <p className="text-gray-400 text-sm mt-1">Upload your first file using the button above</p>
             </div>
           ) : view === 'grid' ? (
-            <div className="grid grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
               {filtered.map((file) => (
                 <div
                   key={file.id}
@@ -241,7 +267,14 @@ const MediaLibrary = () => {
                   </div>
                   <div className="p-2">
                     <p className="text-xs font-medium text-gray-700 truncate">{file.original_name}</p>
-                    <p className="text-[10px] text-gray-400">{formatBytes(file.size || 0)}</p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-[10px] text-gray-400">{formatBytes(file.size || 0)}</p>
+                      {file.category && (
+                        <span className="text-[10px] px-1.5 py-0.5 bg-red-100 text-red-600 rounded font-medium">
+                          {file.category}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     {deleteConfirm === file.id ? (
@@ -321,7 +354,31 @@ const MediaLibrary = () => {
                 <input type="text" value={editingAlt.fr} onChange={(e) => setEditingAlt(p => ({ ...p, fr: e.target.value }))} placeholder="Décrivez cette image..." className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-red-400" />
               </div>
 
-              <button onClick={handleSaveAlt} className="w-full bg-gray-900 text-white font-bold py-2 rounded-xl text-sm hover:bg-gray-800 transition-colors">Save Alt Text</button>
+              <div>
+                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Gallery Category</div>
+                <select
+                  value={editingCategory}
+                  onChange={(e) => setEditingCategory(e.target.value)}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-red-400 bg-white"
+                >
+                  <option value="">No Category</option>
+                  {GALLERY_CATEGORIES.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={editingShowInGallery}
+                  onChange={(e) => setEditingShowInGallery(e.target.checked)}
+                  className="w-4 h-4 accent-red-600 rounded border-gray-300"
+                />
+                <span className="text-xs font-medium text-gray-700">Show in Gallery Page</span>
+              </label>
+
+              <button onClick={handleSaveDetails} className="w-full bg-gray-900 text-white font-bold py-2 rounded-xl text-sm hover:bg-gray-800 transition-colors">Save Details</button>
 
               <button onClick={() => copyUrl(selected.url)} className="w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-600 font-bold py-2 rounded-xl text-sm hover:bg-gray-50 transition-colors">
                 <Copy size={14} /> Copy URL

@@ -17,7 +17,7 @@ const Galerie = () => {
   useEffect(() => {
     const fetchUploadedImages = async () => {
       try {
-        const res = await fetch('/api/media/public?type=image');
+        const res = await fetch('/api/media/public?type=image&gallery=true');
         if (!res.ok) return;
         const data = await res.json();
         setUploadedImages(Array.isArray(data) ? data : []);
@@ -37,7 +37,7 @@ const Galerie = () => {
       en: item.alt_text_en || item.original_name || `Gallery image ${index + 1}`,
       fr: item.alt_text_fr || item.alt_text_en || item.original_name || `Image galerie ${index + 1}`
     },
-    category: 'All' as GalleryCategory,
+    category: (item.category as GalleryCategory) || 'All',
     type: 'image' as const
   })), [uploadedImages]);
 
@@ -45,7 +45,7 @@ const Galerie = () => {
 
   const photos = sourceItems.filter(item => 
     item.type === 'image' && 
-    (activeCategory === 'All' || item.category === activeCategory || uploadedGalleryItems.length > 0)
+    (activeCategory === 'All' || item.category === activeCategory)
   );
 
   const videos: any[] = [

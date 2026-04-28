@@ -155,6 +155,14 @@ router.put('/pages/:id', authMiddleware, async (req, res) => {
     } catch (error: any) { res.status(500).json({ error: 'Failed to update page: ' + error.message }); }
 });
 
+router.delete('/pages/:id', authMiddleware, async (req, res) => {
+    try {
+        await query('DELETE FROM page_content WHERE page_id = ?', [req.params.id]);
+        await query('DELETE FROM pages WHERE id = ?', [req.params.id]);
+        res.json({ success: true });
+    } catch (error: any) { res.status(500).json({ error: 'Failed to delete page: ' + error.message }); }
+});
+
 router.get('/pages/:slug', async (req, res) => {
     try {
         const pages: any = await query(`SELECT p.*, pc.*, m1.url as image_1_id_url, m2.url as image_2_id_url, m3.url as image_3_id_url FROM pages p LEFT JOIN page_content pc ON p.id = pc.page_id LEFT JOIN media m1 ON pc.image_1_id = m1.id LEFT JOIN media m2 ON pc.image_2_id = m2.id LEFT JOIN media m3 ON pc.image_3_id = m3.id WHERE p.slug = ?`, [req.params.slug]);
@@ -222,10 +230,13 @@ router.delete('/blog/:id', authMiddleware, async (req, res) => {
 // MEDIA
 router.get('/media/public', async (req, res) => {
     try {
-        const { type } = req.query;
+        const { type, gallery } = req.query;
         let sql = 'SELECT * FROM media';
-        if (type === 'image') sql += " WHERE mime_type LIKE 'image/%'";
-        else if (type === 'document') sql += " WHERE mime_type NOT LIKE 'image/%'";
+        const conditions: string[] = [];
+        if (type === 'image') conditions.push("mime_type LIKE 'image/%'");
+        else if (type === 'document') conditions.push("mime_type NOT LIKE 'image/%'");
+        if (gallery === 'true') conditions.push('show_in_gallery = 1');
+        if (conditions.length > 0) sql += ' WHERE ' + conditions.join(' AND ');
         sql += ' ORDER BY uploaded_at DESC';
         res.json(await query(sql));
     } catch {
@@ -255,9 +266,9 @@ router.post('/media/upload', authMiddleware, upload.single('file'), async (req, 
 });
 
 router.put('/media/:id', authMiddleware, async (req, res) => {
-    const { alt_text_en, alt_text_fr } = req.body;
+    const { alt_text_en, alt_text_fr, category, show_in_gallery } = req.body;
     try {
-        await query('UPDATE media SET alt_text_en = ?, alt_text_fr = ? WHERE id = ?', [alt_text_en, alt_text_fr, req.params.id]);
+        await query('UPDATE media SET alt_text_en = ?, alt_text_fr = ?, category = ?, show_in_gallery = ? WHERE id = ?', [alt_text_en, alt_text_fr, category, show_in_gallery ? 1 : 0, req.params.id]);
         res.json({ success: true });
     } catch { res.status(500).json({ error: 'Failed to update media' }); }
 });
