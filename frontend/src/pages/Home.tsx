@@ -431,7 +431,8 @@ const PartnersInPurpose = ({ data }: { data?: any }) => {
   const partners = data?.partners?.map(partner => ({
     name: language === 'fr' ? partner.name_fr : partner.name_en,
     role: language === 'fr' ? partner.role_fr : partner.role_en,
-    desc: language === 'fr' ? partner.desc_fr : partner.desc_en
+    desc: language === 'fr' ? partner.desc_fr : partner.desc_en,
+    image: partner.image_url || partner.image_id_url
   })) || defaultContent[language].partners;
 
   const label = data ? (language === 'fr' ? data.partners_label_fr : data.partners_label_en) : defaultContent[language].label;
@@ -478,7 +479,7 @@ const PartnersInPurpose = ({ data }: { data?: any }) => {
               transition={{ duration: 0.6, delay: i * 0.1 }}
             >
               <div className="aspect-video overflow-hidden rounded-lg mb-6">
-                <img src={images[i] || images[0]} alt={partner.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+                <img src={partner.image || images[i] || images[0]} alt={partner.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
               </div>
               <h4 className="text-brand-sage font-sans text-[10px] uppercase tracking-[0.2em] mb-2">{partner.role}</h4>
               <h3 className="text-xl font-serif mb-3 text-white">{partner.name}</h3>
@@ -635,6 +636,7 @@ const Products = ({ data }: { data?: any }) => {
             const productSubtitle = language === 'fr' ? p.subtitle_fr : p.subtitle_en;
             const productDesc = language === 'fr' ? p.desc_fr : p.desc_en;
             const productBadge = language === 'fr' ? p.badge_fr : p.badge_en;
+            const productImage = p.image_url || p.image_id_url || images[i] || images[0];
             return (
             <motion.div
               key={productTitle}
@@ -646,7 +648,7 @@ const Products = ({ data }: { data?: any }) => {
             >
               <div className="relative h-[300px] md:h-[340px] bg-brand-sage/5 rounded-md overflow-hidden">
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-deep font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 z-10 rounded shadow-sm">{productBadge}</div>
-                <img src={images[i] || images[0]} alt={productTitle} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                <img src={productImage} alt={productTitle} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
               </div>
               <div className="pt-6">
                 <div className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-brand-sage mb-2">{productSubtitle}</div>
@@ -936,7 +938,7 @@ const AreaOfMonth = () => {
           <div className="relative aspect-[3/4] overflow-hidden rounded-sm">
             <motion.img 
               style={{ y, scale: 1.2 }}
-              src="src/assets/image2.png" 
+              src={image2} 
               alt="Kélibia" 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"

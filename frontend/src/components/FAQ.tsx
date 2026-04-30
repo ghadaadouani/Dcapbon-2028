@@ -65,7 +65,7 @@ const FAQ = ({ data }: { data?: any }) => {
                 className="w-full py-6 flex justify-between items-center text-left text-dark font-sans font-medium text-lg focus:outline-none"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
               >
-                {faq.q}
+                <span dangerouslySetInnerHTML={{ __html: faq.q }} />
                 <span className={`text-2xl transition-transform duration-400 ${openIndex === i ? 'rotate-45' : ''}`}>+</span>
               </button>
               <motion.div
@@ -73,7 +73,7 @@ const FAQ = ({ data }: { data?: any }) => {
                 animate={{ height: openIndex === i ? 'auto' : 0, opacity: openIndex === i ? 1 : 0 }}
                 className="overflow-hidden"
               >
-                <p className="pb-6 text-muted text-sm leading-relaxed">{faq.a}</p>
+                <div className="pb-6 text-muted text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.a }} />
               </motion.div>
             </motion.div>
           ))}

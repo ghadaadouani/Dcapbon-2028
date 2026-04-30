@@ -59,9 +59,9 @@ const About = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-brand-deep/80 text-lg md:text-xl leading-relaxed font-sans"
+            className="text-brand-deep/80 text-lg md:text-xl leading-relaxed font-sans relative z-10 overflow-hidden min-w-0"
           >
-            <div className="mb-12" dangerouslySetInnerHTML={{ __html: fields.body2 }} />
+            <div className="mb-12 break-words" dangerouslySetInnerHTML={{ __html: fields.body2 }} />
             
             <div className="flex flex-wrap gap-4 mt-8">
               <Link to="/la-region/projet-candidature" className="btn btn-primary">
@@ -74,7 +74,7 @@ const About = () => {
           </motion.div>
 
           {/* Image Placeholders */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-8 relative z-0">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -83,11 +83,19 @@ const About = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-[4/5] bg-brand-sage/10 rounded-2xl overflow-hidden relative group shadow-xl">
-                <div className="absolute inset-0 flex items-center justify-center p-8 text-center bg-brand-deep/5">
-                  <span className="text-brand-deep/30 font-serif italic text-sm">
-                    {t('aboutPage.img1Caption')}
-                  </span>
-                </div>
+                {dynamicContent?.image_2_id_url ? (
+                  <img 
+                    src={dynamicContent.image_2_id_url} 
+                    alt={dynamicContent?.image_2_alt_en || 'Image 1'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center p-8 text-center bg-brand-deep/5">
+                    <span className="text-brand-deep/30 font-serif italic text-sm">
+                      {t('aboutPage.img1Caption')}
+                    </span>
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
@@ -103,11 +111,19 @@ const About = () => {
               className="flex flex-col gap-4 translate-y-8 sm:translate-y-16"
             >
               <div className="aspect-[4/5] bg-brand-forest/10 rounded-2xl overflow-hidden relative group shadow-xl">
-                <div className="absolute inset-0 flex items-center justify-center p-8 text-center bg-brand-deep/5">
-                  <span className="text-brand-deep/30 font-serif italic text-sm text-[#546B41]">
-                    {t('aboutPage.img2Caption')}
-                  </span>
-                </div>
+                {dynamicContent?.image_3_id_url ? (
+                  <img 
+                    src={dynamicContent.image_3_id_url} 
+                    alt={dynamicContent?.image_3_alt_en || 'Image 2'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center p-8 text-center bg-brand-deep/5">
+                    <span className="text-brand-deep/30 font-serif italic text-sm text-[#546B41]">
+                      {t('aboutPage.img2Caption')}
+                    </span>
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">

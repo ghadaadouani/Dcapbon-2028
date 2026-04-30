@@ -113,6 +113,7 @@ router.get('/pages', async (req, res) => {
                    pc.gallery_title_en, pc.gallery_title_fr, pc.gallery,
                    pc.timeline_title_en, pc.timeline_title_fr, pc.timeline,
                    pc.partners_title_en, pc.partners_title_fr, pc.partners,
+                   pc.partners_cta1_en, pc.partners_cta1_fr, pc.partners_cta2_en, pc.partners_cta2_fr,
                    m1.url as image_1_id_url, m2.url as image_2_id_url, m3.url as image_3_id_url
             FROM pages p LEFT JOIN page_content pc ON p.id = pc.page_id 
             LEFT JOIN media m1 ON pc.image_1_id = m1.id LEFT JOIN media m2 ON pc.image_2_id = m2.id LEFT JOIN media m3 ON pc.image_3_id = m3.id
@@ -141,15 +142,15 @@ router.post('/pages', authMiddleware, async (req, res) => {
 });
 
 router.put('/pages/:id', authMiddleware, async (req, res) => {
-    const { slug, is_visible, menu_label_en, menu_label_fr, title_en, title_fr, subtitle_1_en, subtitle_1_fr, subtitle_2_en, subtitle_2_fr, subtitle_3_en, subtitle_3_fr, body_1_en, body_1_fr, body_2_en, body_2_fr, body_3_en, body_3_fr, body_4_en, body_4_fr, image_1_id, image_1_alt_en, image_1_alt_fr, image_1_caption_en, image_1_caption_fr, image_2_id, image_2_alt_en, image_2_alt_fr, image_2_caption_en, image_2_caption_fr, image_3_id, image_3_alt_en, image_3_alt_fr, button_1_label_en, button_1_label_fr, button_1_url, button_1_enabled, button_2_label_en, button_2_label_fr, button_2_url, button_2_enabled, button_3_label_en, button_3_label_fr, button_3_url, button_3_enabled, faq_label_en, faq_label_fr, faq_title_en, faq_title_fr, faqs, products_title_en, products_title_fr, products, gallery_title_en, gallery_title_fr, gallery, timeline_title_en, timeline_title_fr, timeline, partners_title_en, partners_title_fr, partners } = req.body;
+    const { slug, is_visible, menu_label_en, menu_label_fr, title_en, title_fr, subtitle_1_en, subtitle_1_fr, subtitle_2_en, subtitle_2_fr, subtitle_3_en, subtitle_3_fr, body_1_en, body_1_fr, body_2_en, body_2_fr, body_3_en, body_3_fr, body_4_en, body_4_fr, image_1_id, image_1_alt_en, image_1_alt_fr, image_1_caption_en, image_1_caption_fr, image_2_id, image_2_alt_en, image_2_alt_fr, image_2_caption_en, image_2_caption_fr, image_3_id, image_3_alt_en, image_3_alt_fr, button_1_label_en, button_1_label_fr, button_1_url, button_1_enabled, button_2_label_en, button_2_label_fr, button_2_url, button_2_enabled, button_3_label_en, button_3_label_fr, button_3_url, button_3_enabled, faq_label_en, faq_label_fr, faq_title_en, faq_title_fr, faqs, products_title_en, products_title_fr, products, gallery_title_en, gallery_title_fr, gallery, timeline_title_en, timeline_title_fr, timeline, partners_title_en, partners_title_fr, partners, partners_cta1_en, partners_cta1_fr, partners_cta2_en, partners_cta2_fr } = req.body;
     try {
         await query('UPDATE pages SET slug = ?, is_visible = ?, menu_label_en = ?, menu_label_fr = ? WHERE id = ?', [slug, is_visible, menu_label_en, menu_label_fr, req.params.id]);
         const existing: any = await query('SELECT id FROM page_content WHERE page_id = ?', [req.params.id]);
-        const vals = [title_en, title_fr, subtitle_1_en, subtitle_1_fr, subtitle_2_en, subtitle_2_fr, subtitle_3_en, subtitle_3_fr, body_1_en, body_1_fr, body_2_en, body_2_fr, body_3_en, body_3_fr, body_4_en, body_4_fr, image_1_id, image_1_alt_en, image_1_alt_fr, image_1_caption_en, image_1_caption_fr, image_2_id, image_2_alt_en, image_2_alt_fr, image_2_caption_en, image_2_caption_fr, image_3_id, image_3_alt_en, image_3_alt_fr, button_1_label_en, button_1_label_fr, button_1_url, button_1_enabled, button_2_label_en, button_2_label_fr, button_2_url, button_2_enabled, button_3_label_en, button_3_label_fr, button_3_url, button_3_enabled, faq_label_en, faq_label_fr, faq_title_en, faq_title_fr, faqs ? JSON.stringify(faqs) : null, products_title_en, products_title_fr, products ? JSON.stringify(products) : null, gallery_title_en, gallery_title_fr, gallery ? JSON.stringify(gallery) : null, timeline_title_en, timeline_title_fr, timeline ? JSON.stringify(timeline) : null, partners_title_en, partners_title_fr, partners ? JSON.stringify(partners) : null];
+        const vals = [title_en, title_fr, subtitle_1_en, subtitle_1_fr, subtitle_2_en, subtitle_2_fr, subtitle_3_en, subtitle_3_fr, body_1_en, body_1_fr, body_2_en, body_2_fr, body_3_en, body_3_fr, body_4_en, body_4_fr, image_1_id, image_1_alt_en, image_1_alt_fr, image_1_caption_en, image_1_caption_fr, image_2_id, image_2_alt_en, image_2_alt_fr, image_2_caption_en, image_2_caption_fr, image_3_id, image_3_alt_en, image_3_alt_fr, button_1_label_en, button_1_label_fr, button_1_url, button_1_enabled, button_2_label_en, button_2_label_fr, button_2_url, button_2_enabled, button_3_label_en, button_3_label_fr, button_3_url, button_3_enabled, faq_label_en, faq_label_fr, faq_title_en, faq_title_fr, faqs ? JSON.stringify(faqs) : null, products_title_en, products_title_fr, products ? JSON.stringify(products) : null, gallery_title_en, gallery_title_fr, gallery ? JSON.stringify(gallery) : null, timeline_title_en, timeline_title_fr, timeline ? JSON.stringify(timeline) : null, partners_title_en, partners_title_fr, partners ? JSON.stringify(partners) : null, partners_cta1_en, partners_cta1_fr, partners_cta2_en, partners_cta2_fr];
         if ((Array.isArray(existing) ? existing.length : 0) > 0) {
-            await query(`UPDATE page_content SET title_en=?,title_fr=?,subtitle_1_en=?,subtitle_1_fr=?,subtitle_2_en=?,subtitle_2_fr=?,subtitle_3_en=?,subtitle_3_fr=?,body_1_en=?,body_1_fr=?,body_2_en=?,body_2_fr=?,body_3_en=?,body_3_fr=?,body_4_en=?,body_4_fr=?,image_1_id=?,image_1_alt_en=?,image_1_alt_fr=?,image_1_caption_en=?,image_1_caption_fr=?,image_2_id=?,image_2_alt_en=?,image_2_alt_fr=?,image_2_caption_en=?,image_2_caption_fr=?,image_3_id=?,image_3_alt_en=?,image_3_alt_fr=?,button_1_label_en=?,button_1_label_fr=?,button_1_url=?,button_1_enabled=?,button_2_label_en=?,button_2_label_fr=?,button_2_url=?,button_2_enabled=?,button_3_label_en=?,button_3_label_fr=?,button_3_url=?,button_3_enabled=?,faq_label_en=?,faq_label_fr=?,faq_title_en=?,faq_title_fr=?,faqs=?,products_title_en=?,products_title_fr=?,products=?,gallery_title_en=?,gallery_title_fr=?,gallery=?,timeline_title_en=?,timeline_title_fr=?,timeline=?,partners_title_en=?,partners_title_fr=?,partners=? WHERE page_id=?`, [...vals, req.params.id]);
+            await query(`UPDATE page_content SET title_en=?,title_fr=?,subtitle_1_en=?,subtitle_1_fr=?,subtitle_2_en=?,subtitle_2_fr=?,subtitle_3_en=?,subtitle_3_fr=?,body_1_en=?,body_1_fr=?,body_2_en=?,body_2_fr=?,body_3_en=?,body_3_fr=?,body_4_en=?,body_4_fr=?,image_1_id=?,image_1_alt_en=?,image_1_alt_fr=?,image_1_caption_en=?,image_1_caption_fr=?,image_2_id=?,image_2_alt_en=?,image_2_alt_fr=?,image_2_caption_en=?,image_2_caption_fr=?,image_3_id=?,image_3_alt_en=?,image_3_alt_fr=?,button_1_label_en=?,button_1_label_fr=?,button_1_url=?,button_1_enabled=?,button_2_label_en=?,button_2_label_fr=?,button_2_url=?,button_2_enabled=?,button_3_label_en=?,button_3_label_fr=?,button_3_url=?,button_3_enabled=?,faq_label_en=?,faq_label_fr=?,faq_title_en=?,faq_title_fr=?,faqs=?,products_title_en=?,products_title_fr=?,products=?,gallery_title_en=?,gallery_title_fr=?,gallery=?,timeline_title_en=?,timeline_title_fr=?,timeline=?,partners_title_en=?,partners_title_fr=?,partners=?,partners_cta1_en=?,partners_cta1_fr=?,partners_cta2_en=?,partners_cta2_fr=? WHERE page_id=?`, [...vals, req.params.id]);
         } else {
-            await query(`INSERT INTO page_content (page_id,title_en,title_fr,subtitle_1_en,subtitle_1_fr,subtitle_2_en,subtitle_2_fr,subtitle_3_en,subtitle_3_fr,body_1_en,body_1_fr,body_2_en,body_2_fr,body_3_en,body_3_fr,body_4_en,body_4_fr,image_1_id,image_1_alt_en,image_1_alt_fr,image_1_caption_en,image_1_caption_fr,image_2_id,image_2_alt_en,image_2_alt_fr,image_2_caption_en,image_2_caption_fr,image_3_id,image_3_alt_en,image_3_alt_fr,button_1_label_en,button_1_label_fr,button_1_url,button_1_enabled,button_2_label_en,button_2_label_fr,button_2_url,button_2_enabled,button_3_label_en,button_3_label_fr,button_3_url,button_3_enabled,faq_label_en,faq_label_fr,faq_title_en,faq_title_fr,faqs,products_title_en,products_title_fr,products,gallery_title_en,gallery_title_fr,gallery,timeline_title_en,timeline_title_fr,timeline,partners_title_en,partners_title_fr,partners) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, [req.params.id, ...vals]);
+            await query(`INSERT INTO page_content (page_id,title_en,title_fr,subtitle_1_en,subtitle_1_fr,subtitle_2_en,subtitle_2_fr,subtitle_3_en,subtitle_3_fr,body_1_en,body_1_fr,body_2_en,body_2_fr,body_3_en,body_3_fr,body_4_en,body_4_fr,image_1_id,image_1_alt_en,image_1_alt_fr,image_1_caption_en,image_1_caption_fr,image_2_id,image_2_alt_en,image_2_alt_fr,image_2_caption_en,image_2_caption_fr,image_3_id,image_3_alt_en,image_3_alt_fr,button_1_label_en,button_1_label_fr,button_1_url,button_1_enabled,button_2_label_en,button_2_label_fr,button_2_url,button_2_enabled,button_3_label_en,button_3_label_fr,button_3_url,button_3_enabled,faq_label_en,faq_label_fr,faq_title_en,faq_title_fr,faqs,products_title_en,products_title_fr,products,gallery_title_en,gallery_title_fr,gallery,timeline_title_en,timeline_title_fr,timeline,partners_title_en,partners_title_fr,partners,partners_cta1_en,partners_cta1_fr,partners_cta2_en,partners_cta2_fr) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, [req.params.id, ...vals]);
         }
         res.json({ success: true });
     } catch (error: any) { res.status(500).json({ error: 'Failed to update page: ' + error.message }); }
@@ -178,6 +179,42 @@ router.get('/pages/:slug', async (req, res) => {
                 }
             }
         });
+        // Resolve image IDs to URLs for products, gallery, timeline, and partners
+        const mediaIds: number[] = [];
+        const imageFields: Array<{array: any[], idField: string, urlField: string}> = [];
+        // Collect all image IDs from arrays
+        if (Array.isArray(page.products)) {
+            imageFields.push({ array: page.products, idField: 'image_id', urlField: 'image_url' });
+        }
+        if (Array.isArray(page.gallery)) {
+            imageFields.push({ array: page.gallery, idField: 'image_id', urlField: 'image_url' });
+        }
+        if (Array.isArray(page.timeline)) {
+            imageFields.push({ array: page.timeline, idField: 'image_id', urlField: 'image_url' });
+        }
+        if (Array.isArray(page.partners)) {
+            imageFields.push({ array: page.partners, idField: 'image_id', urlField: 'image_url' });
+        }
+        // Collect unique IDs
+        imageFields.forEach(({ array, idField }) => {
+            array.forEach((item: any) => {
+                if (item[idField]) mediaIds.push(item[idField]);
+            });
+        });
+        // Fetch media URLs if there are any IDs
+        if (mediaIds.length > 0) {
+            const placeholders = mediaIds.map(() => '?').join(',');
+            const media: any = await query(`SELECT id, url FROM media WHERE id IN (${placeholders})`, mediaIds);
+            const mediaMap = new Map((Array.isArray(media) ? media : []).map((m: any) => [m.id, m.url]));
+            // Assign URLs to items
+            imageFields.forEach(({ array, idField, urlField }) => {
+                array.forEach((item: any) => {
+                    if (item[idField]) {
+                        item[urlField] = mediaMap.get(item[idField]) || null;
+                    }
+                });
+            });
+        }
         res.json(page);
     } catch (error) { res.status(500).json({ error: 'Failed to fetch page' }); }
 })
@@ -207,7 +244,7 @@ router.post('/blog', authMiddleware, async (req, res) => {
     try {
         const toDate = (v: any) => v ? String(v).split('T')[0] : null;
         const result: any = await query(`INSERT INTO blog_posts (slug,title_en,title_fr,body_en,body_fr,author,is_published,published_at,cover_image_id,meta_title_en,meta_title_fr,meta_desc_en,meta_desc_fr) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-            [slug, title_en, title_fr, body_en, body_fr, author, is_published, toDate(published_at) || (is_published ? new Date().toISOString().split('T')[0] : null), cover_image_id, meta_title_en, meta_title_fr, meta_desc_en, meta_desc_fr]);
+            [slug, title_en, title_fr, body_en, body_fr, author, is_published, toDate(published_at) || (is_published ? new Date().toISOString().split('T')[0] : null), cover_image_id || null, meta_title_en || null, meta_title_fr || null, meta_desc_en || null, meta_desc_fr || null]);
         res.status(201).json({ id: result.insertId });
     } catch (error: any) { res.status(500).json({ error: 'Failed to create post: ' + error.message }); }
 });
@@ -217,7 +254,7 @@ router.put('/blog/:id', authMiddleware, async (req, res) => {
     try {
         const toDate2 = (v: any) => v ? String(v).split('T')[0] : null;
         await query(`UPDATE blog_posts SET slug=?,title_en=?,title_fr=?,body_en=?,body_fr=?,author=?,is_published=?,published_at=?,cover_image_id=?,meta_title_en=?,meta_title_fr=?,meta_desc_en=?,meta_desc_fr=? WHERE id=?`,
-            [slug, title_en, title_fr, body_en, body_fr, author, is_published, toDate2(published_at), cover_image_id, meta_title_en, meta_title_fr, meta_desc_en, meta_desc_fr, req.params.id]);
+            [slug, title_en, title_fr, body_en, body_fr, author, is_published, toDate2(published_at), cover_image_id || null, meta_title_en || null, meta_title_fr || null, meta_desc_en || null, meta_desc_fr || null, req.params.id]);
         res.json({ success: true });
     } catch (error: any) { res.status(500).json({ error: 'Failed to update post: ' + error.message }); }
 });

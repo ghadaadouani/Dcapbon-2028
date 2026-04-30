@@ -159,8 +159,23 @@ const PagesManager = () => {
   const handleMediaSelect = (media: any) => {
     if (activeImageField) {
       handleInputChange(activeImageField, media.id);
-      // Also update temporary preview URL
+      // Also update temporary preview URL at top level
       setFormData((prev: any) => ({ ...prev, [`${activeImageField}_url`]: media.url }));
+      // Handle nested array fields (products, gallery, timeline, partners)
+      const nestedMatch = activeImageField.match(/^(products|gallery|timeline|partners)_(\d+)_image_id$/);
+      if (nestedMatch) {
+        const [, section, index] = nestedMatch;
+        setFormData((prev: any) => {
+          const items = prev[section] || [];
+          const idx = parseInt(index);
+          if (items[idx]) {
+            const newItems = [...items];
+            newItems[idx] = { ...newItems[idx], image_id: media.id, image_url: media.url };
+            return { ...prev, [section]: newItems };
+          }
+          return prev;
+        });
+      }
     }
     setMediaPickerOpen(false);
     setActiveImageField(null);
@@ -174,7 +189,12 @@ const PagesManager = () => {
   const updateNestedField = (section: string, index: number, field: string, value: any) => {
     const items = formData[section] || [];
     const updated = [...items];
-    updated[index] = { ...updated[index], [field]: value };
+    // If clearing image_id, also clear image_url
+    if (field === 'image_id' && value === null) {
+      updated[index] = { ...updated[index], [field]: value, image_url: null };
+    } else {
+      updated[index] = { ...updated[index], [field]: value };
+    }
     handleInputChange(section, updated);
   };
 
@@ -409,7 +429,7 @@ const PagesManager = () => {
                       <div className="flex justify-between items-center mb-6">
                         <label className="text-[10px] font-black tracking-widest text-gray-400 uppercase">Image Slot {num}</label>
                         <button 
-                          onClick={() => openMediaPicker(`image_${num}_id`)}
+                          onClick={() => openMediaPickerForField(`image_${num}_id`)}
                           className="bg-gray-900 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all"
                         >
                           {formData[`image_${num}_id`] ? 'Replace Image' : 'Select Image'}
@@ -586,7 +606,7 @@ const PagesManager = () => {
                   <div className="flex justify-between items-center mb-6">
                     <label className="text-[10px] font-black tracking-widest text-gray-400 uppercase">Image Slot 3</label>
                     <button 
-                      onClick={() => openMediaPicker(`image_3_id`)}
+                      onClick={() => openMediaPickerForField(`image_3_id`)}
                       className="bg-gray-900 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all"
                     >
                       {formData[`image_3_id`] ? 'Replace Image' : 'Select Image'}
@@ -800,12 +820,20 @@ const PagesManager = () => {
                           onClick={() => openMediaPickerForField(`products_${idx}_image_id`)}
                           className="px-6 py-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-600 text-sm font-bold hover:bg-blue-100 transition-all flex items-center gap-2"
                         >
-                          <ImageIcon size={16} /> Choose Image
+                          <ImageIcon size={16} /> {product.image_url ? 'Change Image' : 'Choose Image'}
                         </button>
                         {product.image_url && (
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <img src={product.image_url} alt="Preview" className="h-16 w-16 object-cover rounded" />
-                            <span className="text-xs text-gray-500">Selected</span>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-xs text-gray-500">Selected</span>
+                              <button
+                                onClick={() => updateNestedField('products', idx, 'image_id', null)}
+                                className="text-xs text-red-500 hover:text-red-700 underline"
+                              >
+                                Remove
+                              </button>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -914,7 +942,7 @@ const PagesManager = () => {
                       </button>
                     </div>
                     
-                    {/* Image Upload */}
+                    {/* Gallery Image */}
                     <div className="col-span-2">
                       <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Gallery Image</label>
                       <div className="flex items-center gap-4">
@@ -922,17 +950,18 @@ const PagesManager = () => {
                           onClick={() => openMediaPickerForField(`gallery_${idx}_image_id`)}
                           className="px-6 py-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-600 text-sm font-bold hover:bg-blue-100 transition-all flex items-center gap-2"
                         >
-                          <ImageIcon size={16} /> Choose Image
+                          <ImageIcon size={16} /> {item.image_url ? 'Change Image' : 'Choose Image'}
                         </button>
                         {item.image_url && (
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <img src={item.image_url} alt="Preview" className="h-16 w-16 object-cover rounded" />
-                            <span className="text-xs text-gray-500">Selected</span>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-xs text-gray-500">Selected</span>
+                            </div>
                           </div>
                         )}
                       </div>
                     </div>
-                    
                     <div>
                       <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Caption (EN)</label>
                       <input 
@@ -1016,12 +1045,20 @@ const PagesManager = () => {
                           onClick={() => openMediaPickerForField(`timeline_${idx}_image_id`)}
                           className="px-6 py-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-600 text-sm font-bold hover:bg-blue-100 transition-all flex items-center gap-2"
                         >
-                          <ImageIcon size={16} /> Choose Image
+                          <ImageIcon size={16} /> {era.image_url ? 'Change Image' : 'Choose Image'}
                         </button>
                         {era.image_url && (
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <img src={era.image_url} alt="Preview" className="h-16 w-16 object-cover rounded" />
-                            <span className="text-xs text-gray-500">Selected</span>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-xs text-gray-500">Selected</span>
+                              <button
+                                onClick={() => updateNestedField('timeline', idx, 'image_id', null)}
+                                className="text-xs text-red-500 hover:text-red-700 underline"
+                              >
+                                Remove
+                              </button>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -1084,7 +1121,7 @@ const PagesManager = () => {
                     <button
                       onClick={() => {
                         const partners = formData.partners || [];
-                        handleInputChange('partners', [...partners, { name_en: '', name_fr: '', role_en: '', role_fr: '', desc_en: '', desc_fr: '' }]);
+                        handleInputChange('partners', [...partners, { name_en: '', name_fr: '', role_en: '', role_fr: '', desc_en: '', desc_fr: '', image_id: null }]);
                       }}
                       className="bg-red-600 text-white px-6 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-all flex items-center gap-2"
                     >
@@ -1111,6 +1148,47 @@ const PagesManager = () => {
                       />
                     </div>
                   </div>
+
+                  {/* CTA Buttons */}
+                  <div className="grid grid-cols-2 gap-6 mb-6 p-4 bg-white rounded-xl border border-red-100">
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Button 1 Text (EN)</label>
+                      <input
+                        className="w-full p-3 bg-gray-50 border border-transparent rounded-lg text-sm outline-none focus:bg-white focus:border-red-500 transition-all"
+                        value={formData.partners_cta1_en || ''}
+                        onChange={(e) => handleInputChange('partners_cta1_en', e.target.value)}
+                        placeholder="e.g., Meet Our Partners"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Button 1 Text (FR)</label>
+                      <input
+                        className="w-full p-3 bg-gray-50 border border-transparent rounded-lg text-sm outline-none focus:bg-white focus:border-red-500 transition-all"
+                        value={formData.partners_cta1_fr || ''}
+                        onChange={(e) => handleInputChange('partners_cta1_fr', e.target.value)}
+                        placeholder="p.ex., Rencontrer Nos Partenaires"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Button 2 Text (EN)</label>
+                      <input
+                        className="w-full p-3 bg-gray-50 border border-transparent rounded-lg text-sm outline-none focus:bg-white focus:border-red-500 transition-all"
+                        value={formData.partners_cta2_en || ''}
+                        onChange={(e) => handleInputChange('partners_cta2_en', e.target.value)}
+                        placeholder="e.g., Join the Initiative"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Button 2 Text (FR)</label>
+                      <input
+                        className="w-full p-3 bg-gray-50 border border-transparent rounded-lg text-sm outline-none focus:bg-white focus:border-red-500 transition-all"
+                        value={formData.partners_cta2_fr || ''}
+                        onChange={(e) => handleInputChange('partners_cta2_fr', e.target.value)}
+                        placeholder="p.ex., Rejoindre l'Initiative"
+                      />
+                    </div>
+                  </div>
+
                   <p className="text-gray-500 text-sm">Manage partner organizations and collaborations</p>
                 </div>
 
@@ -1118,7 +1196,7 @@ const PagesManager = () => {
                   <div key={idx} className="grid grid-cols-2 gap-8 mb-8 p-8 bg-white rounded-3xl border border-gray-200">
                     <div className="col-span-2 flex justify-between items-center mb-6 pb-6 border-b border-gray-100">
                       <h4 className="font-bold text-gray-600">Partner #{idx + 1}</h4>
-                      <button 
+                      <button
                         onClick={() => {
                           const partners = formData.partners.filter((_, i) => i !== idx);
                           handleInputChange('partners', partners);
@@ -1128,6 +1206,34 @@ const PagesManager = () => {
                         <X size={16} />
                       </button>
                     </div>
+
+                    {/* Partner Image */}
+                    <div className="col-span-2">
+                      <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Partner Logo/Image</label>
+                      <div className="flex items-center gap-4">
+                        <button
+                          onClick={() => openMediaPickerForField(`partners_${idx}_image_id`)}
+                          className="px-6 py-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-600 text-sm font-bold hover:bg-blue-100 transition-all flex items-center gap-2"
+                        >
+                          <ImageIcon size={16} /> {partner.image_url ? 'Change Image' : 'Choose Image'}
+                        </button>
+                        {partner.image_url && (
+                          <div className="flex items-center gap-3">
+                            <img src={partner.image_url} alt="Preview" className="h-16 w-16 object-cover rounded" />
+                            <div className="flex flex-col gap-1">
+                              <span className="text-xs text-gray-500">Selected</span>
+                              <button
+                                onClick={() => updateNestedField('partners', idx, 'image_id', null)}
+                                className="text-xs text-red-500 hover:text-red-700 underline"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
                     <div>
                       <label className="block text-[10px] font-black text-gray-400 uppercase mb-2">Name (EN)</label>
                       <input 

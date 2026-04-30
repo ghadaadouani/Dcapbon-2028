@@ -1,32 +1,89 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, User, Share2 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { articles } from '../../data/articles';
 import BlogCard from '../../components/BlogCard';
+
+interface BlogPost {
+  id: number;
+  slug: string;
+  title_en: string;
+  title_fr: string;
+  body_en: string;
+  body_fr: string;
+  author: string;
+  published_at: string;
+  category: string;
+  cover_url: string;
+}
 
 const BlogDetail = () => {
   const { id: slug } = useParams<{ id: string }>();
   const { language, t } = useLanguage();
+  const [article, setArticle] = useState<BlogPost | null>(null);
+  const [relatedArticles, setRelatedArticles] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const article = articles.find(a => a.slug === slug);
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        setLoading(true);
+        // Fetch the specific article
+        const res = await fetch(`/api/blog/${slug}`);
+        if (!res.ok) {
+          setError('Article not found');
+          setLoading(false);
+          return;
+        }
+        const data = await res.json();
+        setArticle(data);
+        
+        // Fetch related articles (all published posts except current)
+        const allRes = await fetch('/api/blog?published=true');
+        if (allRes.ok) {
+          const allData = await allRes.json();
+          const related = allData
+            .filter((a: BlogPost) => a.id !== data.id)
+            .slice(0, 3);
+          setRelatedArticles(related);
+        }
+      } catch (err) {
+        setError('Failed to load article');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    if (slug) {
+      fetchArticle();
+    }
+  }, [slug]);
 
-  if (!article) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-brand-cream">
         <div className="text-center">
-          <h1 className="text-4xl font-serif italic mb-6">Article not found</h1>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-deep mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !article) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-brand-cream">
+        <div className="text-center">
+          <h1 className="text-4xl font-serif italic mb-6">{error || 'Article not found'}</h1>
           <Link to="/evenements/blog" className="btn btn-primary">Back to Blog</Link>
         </div>
       </div>
     );
   }
 
-  const relatedArticles = articles
-    .filter(a => a.id !== article.id) // Filter out current article
-    .sort(() => 0.5 - Math.random()) // Randomize
-    .slice(0, 3);
+  const title = language === 'fr' ? article.title_fr : article.title_en;
+  const body = language === 'fr' ? article.body_fr : article.body_en;
 
   return (
     <div className="bg-brand-cream pb-24">
@@ -36,8 +93,8 @@ const BlogDetail = () => {
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          src={article.coverImage} 
-          alt={article.title[language]} 
+          src={article.cover_url} 
+          alt={title} 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
@@ -56,11 +113,11 @@ const BlogDetail = () => {
                   {article.category}
                 </span>
                 <span className="inline-block bg-white/10 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full border border-white/20">
-                  {article.date}
+                  {article.published_at}
                 </span>
               </div>
               <h1 className="text-white text-4xl md:text-7xl font-serif italic leading-[1.1] mb-8">
-                {article.title[language]}
+                {title}
               </h1>
               
               <div className="flex items-center gap-4 text-brand-sage font-bold uppercase tracking-widest text-[11px]">
@@ -96,31 +153,7 @@ const BlogDetail = () => {
             viewport={{ once: true }}
             className="prose prose-xl prose-brand-deep leading-[1.8] font-sans text-brand-deep/80"
           >
-            {article.content[language].split('\n').map((para, i) => (
-              <p key={i} className="mb-8">{para}</p>
-            ))}
-
-            {/* Simulated Inline Image Container */}
-            <div className="my-16 flex flex-col gap-4">
-              <div className="aspect-video bg-brand-forest/5 rounded-3xl overflow-hidden relative shadow-2xl">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-lg lg:text-xl">
-                    {language === 'fr' 
-                      ? "Une scène capturant l'essence du Cap Bon : traditions culinaires et paysages agraires."
-                      : "A scene capturing the essence of Cap Bon: culinary traditions and agrarian landscapes."}
-                  </span>
-                </div>
-              </div>
-              <p className="text-[10px] text-center font-bold uppercase tracking-widest text-brand-forest/40">
-                Visualizing the story of our heritage
-              </p>
-            </div>
-            
-            <p className="font-serif italic text-2xl text-brand-deep mt-12 mb-8 border-l-4 border-brand-red pl-8">
-              {language === 'fr' 
-                ? "Nous ne documentons pas seulement le passé ; nous construisons ensemble le futur de notre gastronomie."
-                : "We are not just documenting the past; we are building the future of our gastronomy together."}
-            </p>
+            <div dangerouslySetInnerHTML={{ __html: body }} />
           </motion.div>
           
           <div className="mt-20 pt-12 border-t border-brand-forest/10 flex items-center justify-between">

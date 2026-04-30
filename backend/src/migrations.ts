@@ -148,6 +148,10 @@ export const runMigrations = async () => {
             await query(`ALTER TABLE page_content ADD COLUMN partners_title_en TEXT`).catch(() => {});
             await query(`ALTER TABLE page_content ADD COLUMN partners_title_fr TEXT`).catch(() => {});
             await query(`ALTER TABLE page_content ADD COLUMN partners ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN partners_cta1_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN partners_cta1_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN partners_cta2_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN partners_cta2_fr TEXT`).catch(() => {});
         }
     } catch (e) {
         // Migrations are optional, fail silently
@@ -196,6 +200,10 @@ export const runMigrations = async () => {
             meta_title_fr VARCHAR(255),
             meta_desc_en TEXT,
             meta_desc_fr TEXT,
+            inline_image_caption_en TEXT,
+            inline_image_caption_fr TEXT,
+            quote_en TEXT,
+            quote_fr TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at ${timestamp}
         )
@@ -331,5 +339,32 @@ export const runMigrations = async () => {
         }
         
         console.log('✅ Seed completed');
+
+        // Migration: Add inline_image_caption and quote fields to blog_posts
+        console.log('📦 Running blog_posts column migration...');
+        const columnsToAdd = [
+            { name: 'inline_image_caption_en', type: 'TEXT' },
+            { name: 'inline_image_caption_fr', type: 'TEXT' },
+            { name: 'quote_en', type: 'TEXT' },
+            { name: 'quote_fr', type: 'TEXT' },
+            { name: 'inline_image_id', type: 'INT UNSIGNED DEFAULT NULL' }
+        ];
+
+        for (const col of columnsToAdd) {
+            try {
+                await db.execute(`
+                    ALTER TABLE blog_posts 
+                    ADD COLUMN IF NOT EXISTS ${col.name} ${col.type}
+                `);
+                console.log(`✅ Added column: ${col.name}`);
+            } catch (err: any) {
+                if (err.message?.includes('Duplicate') || err.message?.includes('already exists')) {
+                    console.log(`⚠️ Column ${col.name} already exists`);
+                } else {
+                    console.error(`❌ Error adding column ${col.name}:`, err.message);
+                }
+            }
+        }
+        console.log('✅ Blog posts column migration completed');
     }
 };
